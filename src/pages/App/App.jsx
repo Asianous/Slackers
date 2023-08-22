@@ -4,6 +4,7 @@ import { getUser } from '../../utilities/users-service';
 import './App.css';
 import AuthPage from "../AuthPage/AuthPage";
 import NavBar from '../../components/NavBar/NavBar';
+import GroupChat from '../GroupChat/Group';
 import MessagePage from "../MessagePage/MessagePage";
 import { io } from "socket.io-client";
 
@@ -12,6 +13,16 @@ export default function App() {
 
   return (
     <main className="App">
+      { user ?
+          <>
+            <NavBar user={user} setUser={setUser} />
+            <Routes>
+              <Route path="/group" element={<GroupChat />} />
+            </Routes>
+          </>
+          :
+          <AuthPage setUser={setUser} />
+      }
       {user ? (
         <>
           <NavBar user={user} setUser={setUser} />
