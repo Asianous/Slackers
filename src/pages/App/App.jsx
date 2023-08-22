@@ -4,6 +4,7 @@ import { getUser } from '../../utilities/users-service';
 import './App.css';
 import AuthPage from '../AuthPage/AuthPage';
 import NavBar from '../../components/NavBar/NavBar';
+import GroupChat from '../GroupChat/Group';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -13,6 +14,9 @@ export default function App() {
       { user ?
           <>
             <NavBar user={user} setUser={setUser} />
+            <Routes>
+              <Route path="/group" element={<GroupChat />} />
+            </Routes>
           </>
           :
           <AuthPage setUser={setUser} />
