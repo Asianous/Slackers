@@ -7,7 +7,7 @@ require('./config/database');
 const socketIO = require('socket.io'); // Import Socket.IO
 
 const app = express();
-const server = require('http').Server(app); // Create an HTTP server
+// const server = require('http').Server(app); // Create an HTTP server
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -43,6 +43,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(port, function () {
-  console.log(`Express app running on port ${port}`);
-});
+// server.listen(port, function () {
+//   console.log(`Express app running on port ${port}`);
+// });

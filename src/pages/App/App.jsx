@@ -13,21 +13,12 @@ export default function App() {
 
   return (
     <main className="App">
-      { user ?
-          <>
-            <NavBar user={user} setUser={setUser} />
-            <Routes>
-              <Route path="/group" element={<GroupChat />} />
-            </Routes>
-          </>
-          :
-          <AuthPage setUser={setUser} />
-      }
       {user ? (
         <>
           <NavBar user={user} setUser={setUser} />
           <Routes>
             {/* Route components in here */}
+            <Route path="/group" element={<GroupChat />} />
             <Route path="/message" element={<MessagePage />} />
           </Routes>
         </>

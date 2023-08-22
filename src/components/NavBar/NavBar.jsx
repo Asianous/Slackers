@@ -10,6 +10,7 @@ export default function NavBar({ user, setUser }) {
   return (
     <nav>
       <Link to="/group">Group Chat</Link>
+      &nbsp; | &nbsp;
       <Link to="/message">Message</Link>
       &nbsp; | &nbsp;
       <span>Welcome, {user.name}</span>
