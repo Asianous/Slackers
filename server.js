@@ -24,7 +24,11 @@ app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-const io = socketIO(server); // Initialize Socket.IO with the HTTP server
+const server = app.listen(port, function () {
+  console.log(`Express app running on port ${port}`);
+});
+
+const io = require("./config/socket").init(server);
 
 io.on("connection", (socket) => {
   // Listen for "newInteraction" event and update lastInteraction on the server
