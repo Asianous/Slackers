@@ -2,45 +2,43 @@ const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
-// Always require and configure near the top
 require('dotenv').config();
-// Connect to the database
 require('./config/database');
+const socketIO = require('socket.io'); // Import Socket.IO
 
 const app = express();
+const server = require('http').Server(app); // Create an HTTP server
 
 app.use(logger('dev'));
 app.use(express.json());
-
-// Configure both serve-favicon & static middleware
-// to serve from the production 'build' folder
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'build')));
-
-// Middleware to check and verify a JWT and
-// assign the user object from the JWT to req.user
 app.use(require('./config/checkToken'));
 
 const port = process.env.PORT || 3001;
 
-// Put API routes here, before the "catch all" route
 app.use('/api/users', require('./routes/api/users'));
 app.use("/api/message", require("./routes/api/message"));
 
-// The following "catch all" route (note the *) is necessary
-// to return the index.html on all non-AJAX/API requests
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-app.listen(port, function () {
-  console.log(`Express app running on port ${port}`);
-});
-
-const io = require("./config/socket").init(server);
+const io = socketIO(server); // Initialize Socket.IO with the HTTP server
 
 io.on("connection", (socket) => {
+  // Listen for "newInteraction" event and update lastInteraction on the server
+  socket.on("newInteraction", (userId) => {
+    // Update the lastInteraction for the user with userId in your database
+    // You need to implement this part using your database and user model
+    console.log(`User ${userId} interacted with the app`);
+  });
+
   socket.on("newMessage", (msg) => {
     socket.broadcast.emit("newMessage", msg);
   });
+});
+
+server.listen(port, function () {
+  console.log(`Express app running on port ${port}`);
 });

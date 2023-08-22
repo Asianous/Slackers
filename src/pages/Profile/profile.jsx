@@ -1,38 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+const ACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
 
 function UserProfile() {
-  const [profilePicture, setProfilePicture] = useState(null);
+  const [lastInteraction, setLastInteraction] = useState(Date.now());
   const [isActive, setIsActive] = useState(false);
-  const [username, setUsername] = useState('');
-  const [showChangePasswordForm, setShowChangePasswordForm] = useState(false);
 
-  // Fetch user data from the database and update state
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeDifference = currentTime - lastInteraction;
+      setIsActive(timeDifference < ACTIVITY_TIMEOUT);
+    }, 60000); // Update every minute
 
-  const handleProfilePictureUpload = (file) => {
-    // Upload the file to storage and update the user's profile picture URL
-  };
+    return () => {
+      clearInterval(interval);
+    };
+  }, [lastInteraction]);
 
-  const handleChangePassword = (oldPassword, newPassword) => {
-    // Update the user's password in the database (with proper security measures)
-    // Display a success message to the user
+  const handleInteraction = () => {
+    setLastInteraction(Date.now());
+    // Send a request to the server to update the "last active" timestamp
+    // This step needs to be implemented on the server side.
   };
 
   return (
     <div className="user-profile">
       <div className="profile-picture">
-        <img src={profilePicture} alt="Profile" />
+        {/* Your profile picture rendering logic */}
         {isActive && <div className="active-indicator" />}
       </div>
-      <div className="username">{username}</div>
-      <button onClick={() => setShowChangePasswordForm(true)}>Change Password</button>
-
-      {showChangePasswordForm && (
-        <form onSubmit={handleSubmitChangePassword}>
-          <input type="password" placeholder="Old Password" />
-          <input type="password" placeholder="New Password" />
-          <button type="submit">Change Password</button>
-        </form>
-      )}
+      <div className="username">Username</div>
+      <button onClick={handleInteraction}>Interact with App</button>
     </div>
   );
 }
