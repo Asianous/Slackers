@@ -1,27 +1,72 @@
 import React, { useState } from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Messages from '../Messages/Messages';
-import Contacts from '../Contacts/Contacts';
+import { Tabs, Tab, Button, Modal, Typography, Paper, Box } from "@mui/material";
+import Messages from "../Messages/Messages";
+import Contacts from "../Contacts/Contacts";
+import NewContactModal from '../NewContact/NewContact';
+import NewMessageModal from '../NewMessage/NewMessage';
 
-const MESSAGES_KEY = 'messages';
-const CONTACTS_KEY = 'contacts';
+const MESSAGES_KEY = "messages";
+const CONTACTS_KEY = "contacts";
 
 export default function SideBar({ user }) {
   const [activeTab, setActiveTab] = useState(MESSAGES_KEY);
+  const [modalOpen, setModalOpen] = useState(false);
+  const messageOpen = activeTab === MESSAGES_KEY;
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
 
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
-    <div>
-      <Tabs value={activeTab} onChange={handleTabChange}>
+    <Paper style={{ width: "250px", height: "95vh", position: "relative" }}>
+      <Tabs
+        value={activeTab}
+        onChange={handleTabChange}
+        variant="fullWidth"
+        centered
+      >
         <Tab label="Messages" value={MESSAGES_KEY} />
         <Tab label="Contacts" value={CONTACTS_KEY} />
       </Tabs>
-      {activeTab === MESSAGES_KEY && <Messages />}
-      {activeTab === CONTACTS_KEY && <Contacts />}
-    </div>
+      <Box p={0} position="absolute" bottom={0} width="100%">
+        <Button
+          onClick={openModal}
+          color="primary"
+          variant="outlined"
+          fullWidth
+        >
+          New {messageOpen ? "Message" : "Contact"}
+        </Button>
+        <Modal open={modalOpen} onClose={closeModal}>
+          {messageOpen ? 
+            <NewMessageModal closeModal={closeModal} /> :
+            <NewContactModal closeModal={closeModal} />
+          }
+        </Modal>
+      </Box>
+      <Box
+        p={0}
+        position="absolute"
+        bottom={40}
+        width="100%"
+        borderBottom={1}
+        borderColor="grey.300"
+      >
+        <Typography variant="body2">
+          Logged in as: <span className="text-muted">{user.name}</span>
+        </Typography>
+      </Box>
+      <Box className="border-right overflow-auto flex-grow-1">
+        {activeTab === MESSAGES_KEY ? <Messages /> : <Contacts />}
+      </Box>
+    </Paper>
   );
 }
