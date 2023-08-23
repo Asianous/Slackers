@@ -20,7 +20,7 @@ export default function MessagePage() {
       socketRef.current = io();
     }
     socket = socketRef.current;
-    console.log("Socket connected", socketRef.current.connected);
+    // console.log("Socket connected", socketRef.current.connected);
     socket.on("newMessage", (msg) => {
       setMessages((messages) => [...messages, msg]);
       console.log(msg);
