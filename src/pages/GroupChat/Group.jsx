@@ -1,32 +1,68 @@
-import React, { useState } from 'react';
+import { io } from "socket.io-client";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Container,
+  Typography,
+  List,
+  ListItem,
+  TextField,
+  Button,
+} from "@mui/material";
 
-export default function Group({ pastMessages }) {
-  const [messages, setMessages] = useState(pastMessages || []);
-  const [newMessage, setNewMessage] = useState('');
+export default function MessagePage() {
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState("");
+  const socketRef = useRef(null);
+  let socket;
 
-  const handleSendMessage = () => {
-    if (newMessage.trim() !== '') {
-      setMessages([...messages, newMessage]);
-      setNewMessage('');
+  useEffect(() => {
+    if (!socket) {
+      socketRef.current = io();
     }
-  };
+    socket = socketRef.current;
+    socket.on("newMessage", (msg) => {
+      setMessages((messages) => [...messages, msg]);
+      console.log(msg);
+    });
+    return () => {
+      socket.removeAllListeners("newMessage");
+      socket.disconnect();
+    };
+  }, []);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setMessages((m) => [...m, message]);
+    socketRef.current.emit("newMessage", message);
+    setMessage("");
+  }
+
+  function handleChange(e) {
+    setMessage(e.target.value);
+  }
 
   return (
-    <div>
-      <div style={{ maxHeight: '300px', overflowY: 'scroll' }}>
-        {messages.map((message, index) => (
-          <div key={index}>{message}</div>
-        ))}
-      </div>
+    <Container>
+      <Typography variant="h1">Group Chat</Typography>
       <div>
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Start Typing..."
-        />
-        <button onClick={handleSendMessage}>Send</button>
+        <List>
+          {messages.map((msg, idx) => (
+            <ListItem key={idx}>{msg}</ListItem>
+          ))}
+        </List>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            type="text"
+            onChange={handleChange}
+            value={message}
+            placeholder="Start Typing..."
+            fullWidth
+          />
+          <Button type="submit" variant="contained" color="primary">
+            Send
+          </Button>
+        </form>
       </div>
-    </div>
+    </Container>
   );
-}
+};
