@@ -4,11 +4,12 @@ import Messages from "../Messages/Messages";
 import Contacts from "../Contacts/Contacts";
 import NewContactModal from '../NewContact/NewContact';
 import NewMessageModal from '../NewMessage/NewMessage';
+import * as userService from "../../utilities/users-service";
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
 
-export default function SideBar({ user }) {
+export default function SideBar({ user, setUser }) {
   const [activeTab, setActiveTab] = useState(MESSAGES_KEY);
   const [modalOpen, setModalOpen] = useState(false);
   const messageOpen = activeTab === MESSAGES_KEY;
@@ -24,6 +25,11 @@ export default function SideBar({ user }) {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  function handleLogOut() {
+    userService.logOut();
+    setUser(null);
+  }
 
   return (
     <Paper style={{ width: "250px", height: "95vh", position: "relative" }}>
@@ -46,10 +52,11 @@ export default function SideBar({ user }) {
           New {messageOpen ? "Message" : "Contact"}
         </Button>
         <Modal open={modalOpen} onClose={closeModal}>
-          {messageOpen ? 
-            <NewMessageModal closeModal={closeModal} /> :
+          {messageOpen ? (
+            <NewMessageModal closeModal={closeModal} />
+          ) : (
             <NewContactModal closeModal={closeModal} />
-          }
+          )}
         </Modal>
       </Box>
       <Box
@@ -63,6 +70,9 @@ export default function SideBar({ user }) {
         <Typography variant="body2">
           Logged in as: <span className="text-muted">{user.name}</span>
         </Typography>
+        <Button to="" onClick={handleLogOut}>
+          Log Out
+        </Button>
       </Box>
       <Box className="border-right overflow-auto flex-grow-1">
         {activeTab === MESSAGES_KEY ? <Messages /> : <Contacts />}
