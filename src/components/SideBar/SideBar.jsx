@@ -6,6 +6,7 @@ import NewContactModal from '../NewContact/NewContact';
 import NewMessageModal from '../NewMessage/NewMessage';
 import * as userService from "../../utilities/users-service";
 import UserSearch from '../UserSearch/Search';
+import { Link } from 'react-router-dom';
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
@@ -73,6 +74,9 @@ export default function SideBar({ user, setUser }) {
       >
         <Typography variant="body2">
           Logged in as: <span className="text-muted">{user.name}</span>
+          <Button>
+            <Link to="/profile">Profile</Link>
+          </Button>
         </Typography>
         <Button to="" onClick={handleLogOut}>
           Log Out

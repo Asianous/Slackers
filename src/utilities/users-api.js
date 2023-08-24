@@ -29,3 +29,7 @@ export async function searchUsers(query) {
   }
   // throw new Error('Failed to search users.');
 }
+
+export async function updatePassword(passwordInfo) {
+  return sendRequest(`${BASE_URL}/change-password`, 'PUT', passwordInfo);
+}

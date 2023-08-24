@@ -48,6 +48,7 @@ export function checkToken() {
     .then(dateStr => new Date(dateStr));
 }
 
-// export async function search(query) {
-//   return usersAPI.search(query);
-// }
+export function updatePassword({oldPassword, newPassword}){
+  return usersAPI.updatePassword({
+    oldPassword, newPassword
+})}
