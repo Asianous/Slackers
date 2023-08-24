@@ -17,12 +17,9 @@ export default function App() {
     <main className="App">
       {user ? (
         <>
-          <SideBar user={user} setUser={setUser} />
-          {/* <NavBar user={user} setUser={setUser} /> */}
           <Routes>
-            <Route path="/group" element={<GroupChat />} />
-            <Route path="/message" element={<MessagePage />} />
-            <Route path="/search" element={<Search />} />
+            <Route path="/" element={<SideBar user={user} setUser={setUser} />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </>
       ) : (
