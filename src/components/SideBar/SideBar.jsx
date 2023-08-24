@@ -5,9 +5,11 @@ import Contacts from "../Contacts/Contacts";
 import NewContactModal from '../NewContact/NewContact';
 import NewMessageModal from '../NewMessage/NewMessage';
 import * as userService from "../../utilities/users-service";
+import UserSearch from '../UserSearch/Search';
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
+const USER_SEARCH_KEY = 'userSearch';
 
 export default function SideBar({ user, setUser }) {
   const [activeTab, setActiveTab] = useState(MESSAGES_KEY);
@@ -41,7 +43,9 @@ export default function SideBar({ user, setUser }) {
       >
         <Tab label="Messages" value={MESSAGES_KEY} />
         <Tab label="Contacts" value={CONTACTS_KEY} />
+        <Tab label="User Search" value={USER_SEARCH_KEY} />
       </Tabs>
+
       <Box p={0} position="absolute" bottom={0} width="100%">
         <Button
           onClick={openModal}

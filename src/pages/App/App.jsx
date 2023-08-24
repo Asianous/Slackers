@@ -3,10 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import { getUser } from '../../utilities/users-service';
 import './App.css';
 import AuthPage from "../AuthPage/AuthPage";
-import NavBar from '../../components/NavBar/NavBar';
 import GroupChat from '../GroupChat/Group';
 import MessagePage from "../MessagePage/MessagePage";
-import { io } from "socket.io-client";
+import Search from '../../components/UserSearch/Search';
 import SideBar from '../../components/SideBar/SideBar';
 
 export default function App() {
@@ -19,9 +18,9 @@ export default function App() {
           <SideBar user={user} setUser={setUser} />
           {/* <NavBar user={user} setUser={setUser} /> */}
           <Routes>
-            {/* Route components in here */}
             <Route path="/group" element={<GroupChat />} />
             <Route path="/message" element={<MessagePage />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </>
       ) : (

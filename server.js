@@ -19,7 +19,7 @@ const port = process.env.PORT || 3001;
 
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/message", require("./routes/api/message"));
-
+app.use("/api/search", require("./routes/api/search"));
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
