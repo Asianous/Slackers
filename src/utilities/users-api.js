@@ -12,3 +12,20 @@ export async function login(credentials) {
 export async function checkToken() {
   return sendRequest(`${BASE_URL}/check-token`);
 }
+
+// export async function search(query) {
+//   return sendRequest(`api/search`, 'GET');
+// }
+
+
+export async function searchUsers(query) {
+  try{
+    const res = await sendRequest(`/api/search?q=${query}`);
+    console.log(res)
+    return res;
+  }
+  catch(error){
+    console.log(error)
+  }
+  // throw new Error('Failed to search users.');
+}

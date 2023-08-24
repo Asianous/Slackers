@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Messages from '../Messages/Messages';
 import Contacts from '../Contacts/Contacts';
-import UserSearch from '../UserSearch/UserSearch';
+import UserSearch from '../UserSearch/Search';
 
 const MESSAGES_KEY = 'messages';
 const CONTACTS_KEY = 'contacts';
@@ -25,7 +25,7 @@ export default function SideBar({ user }) {
       </Tabs>
       {activeTab === MESSAGES_KEY && <Messages />}
       {activeTab === CONTACTS_KEY && <Contacts />}
-      {activeTab === SEARCH_KEY && <UserSearch />}
+      {activeTab === USER_SEARCH_KEY && <UserSearch />}
     </div>
   );
 }

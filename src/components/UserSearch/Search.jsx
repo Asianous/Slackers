@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Search.css';
-import * as userService from '../../utilities/users-service';
+import * as userService from '../../utilities/users-api';
 
 function Search() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -10,7 +10,8 @@ function Search() {
   const handleSearch = async () => {
     setIsLoading(true);
     try {
-      const results = await userService.searchUsers(searchTerm);
+      const results = await userService.searchUsers(searchTerm); // Ensure searchUsers is exported from users-service
+      console.log(results)
       setSearchResults(results);
     } catch (error) {
       console.error('Failed to fetch users:', error);
@@ -33,7 +34,7 @@ function Search() {
       <ul>
         {searchResults.map((user, index) => (
           <li key={index}>
-            {user.username}
+            {user.name}
             <button>Add Friend</button>
           </li>
         ))}

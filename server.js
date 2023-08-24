@@ -19,18 +19,10 @@ const port = process.env.PORT || 3001;
 
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/message", require("./routes/api/message"));
-
+app.use("/api/search", require("./routes/api/search"));
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-
-//User Find
-app.get('/api/search', async (req, res) => {
-  const query = req.query.q;
-  const users = await User.find({ name: { $regex: query, $options: 'i' } });
-  res.json(users);
-});
-
 
 const server = app.listen(port, function () {
   console.log(`Express app running on port ${port}`);

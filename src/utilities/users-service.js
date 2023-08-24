@@ -48,8 +48,6 @@ export function checkToken() {
     .then(dateStr => new Date(dateStr));
 }
 
-export async function searchUsers(query) {
-  const res = await fetch(`/api/search?q=${query}`);
-  if (res.ok) return res.json();
-  throw new Error('Failed to search users.');
-}
+// export async function search(query) {
+//   return usersAPI.search(query);
+// }
