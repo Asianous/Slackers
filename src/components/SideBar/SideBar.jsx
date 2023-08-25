@@ -7,6 +7,7 @@ import NewMessageModal from "../NewMessage/NewMessage";
 import * as userService from "../../utilities/users-service";
 import UserSearch from "../UserSearch/Search";
 import { Link } from "react-router-dom";
+import Messages from "../Messages/Messages";
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
@@ -35,7 +36,7 @@ export default function SideBar({ user, setUser }) {
   }
 
   return (
-    <Paper style={{ width: "250px", height: "95vh", position: "relative" }}>
+    <Paper style={{ width: "250px", position: "relative" }}>
       <Tabs
         value={activeTab}
         onChange={handleTabChange}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Modal,
   Typography,
@@ -8,10 +8,31 @@ import {
   InputAdornment,
 } from "@mui/material";
 import Search from "../UserAutoFill/UserAutoFill";
+import { io } from "socket.io-client";
+import Messages from "../Messages/Messages";
 
 export default function NewMessageModal({ closeModal }) {
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
+  const socketRef = useRef(null);
+  const [messages, setMessages] = useState([]);
+  let socket;
+
+  useEffect(() => {
+    if (!socket) {
+      socketRef.current = io();
+    }
+    socket = socketRef.current;
+    // console.log("Socket connected", socketRef.current.connected);
+    socket.on("newMessage", (msg) => {
+      setMessages((messages) => [...messages, msg]);
+      console.log(msg);
+    });
+    return () => {
+      socket.removeAllListeners("newMessage");
+      socket.disconnect();
+    };
+  }, []);
 
   const handleRecipientChange = (event) => {
     setRecipient(event.target.value);
@@ -22,8 +43,10 @@ export default function NewMessageModal({ closeModal }) {
   };
 
   const handleSendMessage = () => {
+    socketRef.current.emit("newMessage", messages);
+    setMessage("");
     // Implement sending logic here
-    console.log("Sending message:", message);
+    console.log("Sending message:", messages);
     closeModal();
   };
 
