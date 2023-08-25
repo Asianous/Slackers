@@ -52,3 +52,12 @@ export function updatePassword({oldPassword, newPassword}){
   return usersAPI.updatePassword({
     oldPassword, newPassword
 })}
+
+export async function addFriend(userId) {
+  try {
+    const response = await usersAPI.addFriend(userId);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to add friend.');
+  }
+}

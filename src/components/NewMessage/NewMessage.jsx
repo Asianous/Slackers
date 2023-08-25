@@ -7,27 +7,29 @@ import {
   Box,
   InputAdornment,
 } from "@mui/material";
-import Search from "../UserAutoFill/UserAutoFill";
 import { io } from "socket.io-client";
 import Messages from "../Messages/Messages";
+import * as userService from "../../utilities/users-api";
 
 export default function NewMessageModal({ closeModal }) {
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
   const socketRef = useRef(null);
   const [messages, setMessages] = useState([]);
+  const [addedFriends, setAddedFriends] = useState([]);
   let socket;
 
   useEffect(() => {
-    if (!socket) {
+    if (!socketRef.current) {
       socketRef.current = io();
     }
-    socket = socketRef.current;
-    // console.log("Socket connected", socketRef.current.connected);
+    const socket = socketRef.current;
+    
     socket.on("newMessage", (msg) => {
       setMessages((messages) => [...messages, msg]);
       console.log(msg);
     });
+
     return () => {
       socket.removeAllListeners("newMessage");
       socket.disconnect();
@@ -36,10 +38,6 @@ export default function NewMessageModal({ closeModal }) {
 
   const handleRecipientChange = (event) => {
     setRecipient(event.target.value);
-  };
-
-  const handleSelectRecipient = (selectedRecipient) => {
-    setRecipient(selectedRecipient);
   };
 
   const handleSendMessage = () => {
@@ -60,9 +58,6 @@ export default function NewMessageModal({ closeModal }) {
         <Typography variant="h6" gutterBottom>
           New Message
         </Typography>
-        <Button>
-          <Search onSelectRecipient={handleSelectRecipient} />
-        </Button>
         <TextField
           sx={{ height: "100%", width: "100%" }}
           label="Start typing..."

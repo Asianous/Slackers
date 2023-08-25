@@ -33,3 +33,12 @@ export async function searchUsers(query) {
 export async function updatePassword(passwordInfo) {
   return sendRequest(`${BASE_URL}/change-password`, 'PUT', passwordInfo);
 }
+
+export async function addFriend(userId) {
+  try {
+    const response = await usersAPI.addFriend(userId);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to add friend.');
+  }
+}
