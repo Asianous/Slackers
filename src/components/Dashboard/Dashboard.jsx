@@ -5,8 +5,8 @@ import { getUser } from "../../utilities/users-service";
 import Message from "../../components/Messages/Messages";
 import Grid from "@mui/material/Grid";
 
-export default function Dashboard() {
-  const [user, setUser] = useState(getUser());
+export default function Dashboard({ user, setUser }) {
+  // const [user, setUser] = useState(getUser());
 
   return (
     <Grid container sx={{ height: "100vh" }}>
