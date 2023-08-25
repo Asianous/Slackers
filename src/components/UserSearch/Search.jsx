@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Search.css';
 import * as userService from '../../utilities/users-api';
 
 function Search() {
@@ -10,13 +9,22 @@ function Search() {
   const handleSearch = async () => {
     setIsLoading(true);
     try {
-      const results = await userService.searchUsers(searchTerm); // Ensure searchUsers is exported from users-service
+      const results = await userService.searchUsers(searchTerm);
       console.log(results)
       setSearchResults(results);
     } catch (error) {
       console.error('Failed to fetch users:', error);
     }
     setIsLoading(false);
+  };
+
+  const handleAddFriend = async (userId) => {
+    try {
+      console.log(`Adding ${userId} as a friend`);
+      // onAddFriend(userId);
+    } catch (error) {
+      console.error('Failed to add friend:', error);
+    }
   };
 
   return (
@@ -35,7 +43,7 @@ function Search() {
         {searchResults.map((user, index) => (
           <li key={index}>
             {user.name}
-            <button>Add Friend</button>
+            <button onClick={() => handleAddFriend(user._id)}>Add Friend</button>
           </li>
         ))}
       </ul>

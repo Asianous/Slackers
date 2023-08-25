@@ -1,21 +1,22 @@
+// SideBar.jsx
 import React, { useState } from 'react';
 import { Tabs, Tab, Button, Modal, Typography, Paper, Box } from "@mui/material";
-import Messages from "../Messages/Messages";
+import MessagesSideBar from "../MessagesSideBar/MessagesSideBar";
 import Contacts from "../Contacts/Contacts";
 import NewContactModal from '../NewContact/NewContact';
 import NewMessageModal from '../NewMessage/NewMessage';
 import * as userService from "../../utilities/users-service";
-import UserSearch from '../UserSearch/Search';
-import { Link } from 'react-router-dom';
+import UserSearch from "../UserSearch/Search";
+import { Link } from "react-router-dom";
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
-const USER_SEARCH_KEY = 'userSearch';
+const USER_SEARCH_KEY = "userSearch";
 
 export default function SideBar({ user, setUser }) {
   const [activeTab, setActiveTab] = useState(MESSAGES_KEY);
   const [modalOpen, setModalOpen] = useState(false);
-  const messageOpen = activeTab === MESSAGES_KEY;
+  const [contacts, setContacts] = useState([]); // State to store contacts
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -34,8 +35,24 @@ export default function SideBar({ user, setUser }) {
     setUser(null);
   }
 
+  // Function to add a new friend to contacts
+  const handleAddFriend = (newFriend) => {
+    setContacts((prevContacts) => [...prevContacts, newFriend]);
+    closeModal(); // Close the modal after adding a friend
+  };
+
   return (
-    <Paper style={{ width: "250px", height: "95vh", position: "relative" }}>
+    <Paper
+      sx={{
+        maxWidth: 350,
+        width: "100%",
+        position: "relative",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        height: "98vh",
+      }}
+    >
       <Tabs
         value={activeTab}
         onChange={handleTabChange}
@@ -44,46 +61,70 @@ export default function SideBar({ user, setUser }) {
       >
         <Tab label="Messages" value={MESSAGES_KEY} />
         <Tab label="Contacts" value={CONTACTS_KEY} />
-        <Tab label="User Search" value={USER_SEARCH_KEY} />
       </Tabs>
 
-      <Box p={0} position="absolute" bottom={0} width="100%">
+      <Box
+        sx={{
+          p: 0,
+          position: "absolute",
+          bottom: 1,
+          width: "100%",
+        }}
+      >
         <Button
           onClick={openModal}
           color="primary"
-          variant="outlined"
+          variant="contained"
           fullWidth
+          sx={{ borderRadius: 0 }}
         >
-          New {messageOpen ? "Message" : "Contact"}
+          New {activeTab === MESSAGES_KEY ? "Message" : "Contact"}
         </Button>
         <Modal open={modalOpen} onClose={closeModal}>
-          {messageOpen ? (
+          {activeTab === MESSAGES_KEY ? (
             <NewMessageModal closeModal={closeModal} />
           ) : (
-            <NewContactModal closeModal={closeModal} />
+            <UserSearch closeModal={closeModal} onAddFriend={handleAddFriend} />
           )}
         </Modal>
       </Box>
       <Box
-        p={0}
-        position="absolute"
-        bottom={40}
-        width="100%"
-        borderBottom={1}
-        borderColor="grey.300"
+        sx={{
+          p: 0,
+          position: "absolute",
+          bottom: 38,
+          width: "100%",
+          borderBottom: 1,
+          borderColor: "grey.300",
+        }}
       >
         <Typography variant="body2">
           Logged in as: <span className="text-muted">{user.name}</span>
-          <Button>
-            <Link to="/profile">Profile</Link>
+          <Button component={Link} to="/profile">
+            Profile
           </Button>
         </Typography>
-        <Button to="" onClick={handleLogOut}>
-          Log Out
-        </Button>
+        <Button onClick={handleLogOut}>Log Out</Button>
       </Box>
+
+      <Box
+        sx={{
+          p: 1,
+          position: "absolute",
+          top: 60,
+          bottom: 120,
+          width: "100%",
+          overflowY: "auto", // Allow content to scroll if necessary
+        }}
+      ></Box>
       <Box className="border-right overflow-auto flex-grow-1">
-        {activeTab === MESSAGES_KEY ? <Messages /> : <Contacts />}
+        {activeTab === MESSAGES_KEY ? (
+          <MessagesSideBar />
+        ) : activeTab === CONTACTS_KEY ? (
+          <Contacts contacts={contacts} />
+        ) : (
+          <UserSearch closeModal={closeModal} onAddFriend={handleAddFriend} />
+        )}
       </Box>
     </Paper>
   );
