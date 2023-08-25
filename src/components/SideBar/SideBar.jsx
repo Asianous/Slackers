@@ -62,7 +62,6 @@ export default function SideBar({ user, setUser }) {
       >
         <Tab label="Messages" value={MESSAGES_KEY} />
         <Tab label="Contacts" value={CONTACTS_KEY} />
-        <Tab label="User Search" value={USER_SEARCH_KEY} />
       </Tabs>
 
       <Box
