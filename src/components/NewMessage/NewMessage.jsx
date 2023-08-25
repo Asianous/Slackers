@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Modal, Typography, TextField, Button, Box } from "@mui/material";
+import {
+  Modal,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  InputAdornment,
+} from "@mui/material";
 import Search from "../UserAutoFill/UserAutoFill";
 
 export default function NewMessageModal({ closeModal }) {
@@ -12,6 +19,12 @@ export default function NewMessageModal({ closeModal }) {
 
   const handleSelectRecipient = (selectedRecipient) => {
     setRecipient(selectedRecipient);
+  };
+
+  const handleSendMessage = () => {
+    // Implement sending logic here
+    console.log("Sending message:", message);
+    closeModal();
   };
 
   return (
@@ -36,6 +49,15 @@ export default function NewMessageModal({ closeModal }) {
           margin="normal"
           multiline
           rows={5}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Button variant="contained" onClick={handleSendMessage}>
+                  Send
+                </Button>
+              </InputAdornment>
+            ),
+          }}
         />
       </Box>
     </Modal>
