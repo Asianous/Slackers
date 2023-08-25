@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Button, TextField, Typography } from '@mui/material';
 import * as usersService from '../../utilities/users-service';
 
 export default function LoginForm({ setUser }) {
@@ -8,19 +9,14 @@ export default function LoginForm({ setUser }) {
   });
   const [error, setError] = useState('');
 
-  function handleChange(evt) {
+  const handleChange = (evt) => {
     setCredentials({ ...credentials, [evt.target.name]: evt.target.value });
     setError('');
   }
 
-  async function handleSubmit(evt) {
-    // Prevent form from being submitted to the server
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      // The promise returned by the signUp service method 
-      // will resolve to the user object included in the
-      // payload of the JSON Web Token (JWT)
-      // localStorage.setItem('token',user.token);
       const user = await usersService.login(credentials);
       setUser(user);
     } catch {
@@ -32,14 +28,34 @@ export default function LoginForm({ setUser }) {
     <div>
       <div className="form-container">
         <form autoComplete="off" onSubmit={handleSubmit}>
-          <label>Email</label>
-          <input type="text" name="email" value={credentials.email} onChange={handleChange} required />
-          <label>Password</label>
-          <input type="password" name="password" value={credentials.password} onChange={handleChange} required />
-          <button type="submit">LOG IN</button>
+          <TextField
+            label="Email"
+            variant="outlined"
+            type="text"
+            name="email"
+            value={credentials.email}
+            onChange={handleChange}
+            fullWidth
+            sx={{ marginBottom: '1rem', marginTop: '2vmin' }}
+          />
+          <TextField
+            label="Password"
+            variant="outlined"
+            type="password"
+            name="password"
+            value={credentials.password}
+            onChange={handleChange}
+            fullWidth
+            sx={{ marginBottom: '1rem' }}
+          />
+          <Button type="submit" variant="contained" fullWidth style={{ backgroundColor: '#ADA9FC', color: 'white' }}>
+            LOG IN
+          </Button>
         </form>
       </div>
-      <p className="error-message">&nbsp;{error}</p>
+      <Typography variant="body2" sx={{ fontFamily: 'Arial, sans-serif', fontSize: '2vmin', color: 'red', marginTop: '2vmin' }}>
+        &nbsp;{error}
+      </Typography>
     </div>
   );
 }
