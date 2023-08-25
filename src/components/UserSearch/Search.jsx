@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import * as userService from '../../utilities/users-api';
 
-export default function Search({ closeModal }) {
+export default function Search({ closeModal, onAddFriend }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +30,7 @@ export default function Search({ closeModal }) {
   const handleAddFriend = async (userId) => {
     try {
       console.log(`Adding ${userId} as a friend`);
-      // onAddFriend(userId);
+      onAddFriend(userId); // Call the function to add friend from parent component
     } catch (error) {
       console.error('Failed to add friend:', error);
     }
@@ -78,7 +78,7 @@ export default function Search({ closeModal }) {
               <ListItemText primary={user.name} />
               <Button
                 variant="outlined"
-                // onClick={() => handleAddFriend(user._id)}
+                onClick={() => handleAddFriend(user._id)} // Call handleAddFriend with user ID
                 sx={{ marginLeft: 2 }}
               >
                 Add Friend

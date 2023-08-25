@@ -30,14 +30,17 @@ export async function searchUsers(query) {
   // throw new Error('Failed to search users.');
 }
 
-export async function updatePassword(passwordInfo) {
-  return sendRequest(`${BASE_URL}/change-password`, 'PUT', passwordInfo);
+export async function addFriendToContacts(contacts, friend) {
+  const updatedContacts = [...contacts, friend];
+  return updatedContacts;
 }
 
-export async function addFriend(userId) {
+
+export async function addFriend(userId, contacts) {
   try {
-    const response = await usersAPI.addFriend(userId);
-    return response.data;
+    const newFriend = await sendRequest(`${BASE_URL}/add-friend/${userId}`, 'POST');
+    const updatedContacts = addFriendToContacts(contacts, newFriend);
+    return updatedContacts;
   } catch (error) {
     throw new Error('Failed to add friend.');
   }

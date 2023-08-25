@@ -56,6 +56,13 @@ export function updatePassword({oldPassword, newPassword}){
 export async function addFriend(userId) {
   try {
     const response = await usersAPI.addFriend(userId);
+    const newFriend = response.data; 
+
+    const currentContacts = getUser().contacts || [];
+    const updatedContacts = addFriendToContacts(currentContacts, newFriend);
+    const updatedUser = { ...getUser(), contacts: updatedContacts };
+
+    localStorage.setItem('token', createToken({ user: updatedUser }));
     return response.data;
   } catch (error) {
     throw new Error('Failed to add friend.');
