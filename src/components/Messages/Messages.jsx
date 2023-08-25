@@ -47,17 +47,16 @@ export default function Messages() {
   }
 
   const messagesContainerStyle = {
-    position: "fixed",
+    // position: "fixed",
     bottom: 0,
     right: 0,
-    width: "650px",
-    height: "96vh",
-    backgroundColor: "white",
+    // width: "60%",
+    height: "95vh",
     padding: "10px",
     margin: "10px",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
   };
 
   const textFieldStyle = {

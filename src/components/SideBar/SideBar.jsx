@@ -42,7 +42,17 @@ export default function SideBar({ user, setUser }) {
   };
 
   return (
-    <Paper style={{ width: "250px", position: "relative" }}>
+    <Paper
+      sx={{
+        maxWidth: 350,
+        width: "100%",
+        position: "relative",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        height: "98vh",
+      }}
+    >
       <Tabs
         value={activeTab}
         onChange={handleTabChange}
@@ -53,12 +63,20 @@ export default function SideBar({ user, setUser }) {
         <Tab label="Contacts" value={CONTACTS_KEY} />
       </Tabs>
 
-      <Box p={0} position="absolute" bottom={0} width="100%">
+      <Box
+        sx={{
+          p: 0,
+          position: "absolute",
+          bottom: 10,
+          width: "100%",
+        }}
+      >
         <Button
           onClick={openModal}
           color="primary"
           variant="contained"
           fullWidth
+          sx={{ borderRadius: 0 }}
         >
           New {activeTab === MESSAGES_KEY ? "Message" : "Contact"}
         </Button>
@@ -71,23 +89,34 @@ export default function SideBar({ user, setUser }) {
         </Modal>
       </Box>
       <Box
-        p={0}
-        position="absolute"
-        bottom={40}
-        width="100%"
-        borderBottom={1}
-        borderColor="grey.300"
+        sx={{
+          p: 0,
+          position: "absolute",
+          bottom: 46,
+          width: "100%",
+          borderBottom: 1,
+          borderColor: "grey.300",
+        }}
       >
         <Typography variant="body2">
           Logged in as: <span className="text-muted">{user.name}</span>
-          <Button>
-            <Link to="/profile">Profile</Link>
+          <Button component={Link} to="/profile">
+            Profile
           </Button>
         </Typography>
-        <Button to="" onClick={handleLogOut}>
-          Log Out
-        </Button>
+        <Button onClick={handleLogOut}>Log Out</Button>
       </Box>
+
+      <Box
+        sx={{
+          p: 1,
+          position: "absolute",
+          top: 60,
+          bottom: 120,
+          width: "100%",
+          overflowY: "auto", // Allow content to scroll if necessary
+        }}
+      >
       <Box className="border-right overflow-auto flex-grow-1">
         {activeTab === MESSAGES_KEY ? <MessagesSideBar /> : (
           activeTab === CONTACTS_KEY ? <Contacts contacts={contacts} /> : <UserSearch closeModal={closeModal} onAddFriend={handleAddFriend} />
