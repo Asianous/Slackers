@@ -1,9 +1,10 @@
+// SideBar.jsx
 import React, { useState } from 'react';
 import { Tabs, Tab, Button, Modal, Typography, Paper, Box } from "@mui/material";
 import MessagesSideBar from "../MessagesSideBar/MessagesSideBar";
 import Contacts from "../Contacts/Contacts";
-import NewContactModal from "../NewContact/NewContact";
-import NewMessageModal from "../NewMessage/NewMessage";
+import NewContactModal from '../NewContact/NewContact';
+import NewMessageModal from '../NewMessage/NewMessage';
 import * as userService from "../../utilities/users-service";
 import UserSearch from "../UserSearch/Search";
 import { Link } from "react-router-dom";
@@ -15,7 +16,7 @@ const USER_SEARCH_KEY = "userSearch";
 export default function SideBar({ user, setUser }) {
   const [activeTab, setActiveTab] = useState(MESSAGES_KEY);
   const [modalOpen, setModalOpen] = useState(false);
-  const messageOpen = activeTab === MESSAGES_KEY;
+  const [contacts, setContacts] = useState([]); // State to store contacts
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -34,6 +35,12 @@ export default function SideBar({ user, setUser }) {
     setUser(null);
   }
 
+  // Function to add a new friend to contacts
+  const handleAddFriend = (newFriend) => {
+    setContacts((prevContacts) => [...prevContacts, newFriend]);
+    closeModal(); // Close the modal after adding a friend
+  };
+
   return (
     <Paper style={{ width: "250px", position: "relative" }}>
       <Tabs
@@ -44,7 +51,6 @@ export default function SideBar({ user, setUser }) {
       >
         <Tab label="Messages" value={MESSAGES_KEY} />
         <Tab label="Contacts" value={CONTACTS_KEY} />
-        <Tab label="User Search" value={USER_SEARCH_KEY} />
       </Tabs>
 
       <Box p={0} position="absolute" bottom={0} width="100%">
@@ -54,13 +60,13 @@ export default function SideBar({ user, setUser }) {
           variant="contained"
           fullWidth
         >
-          New {messageOpen ? "Message" : "Contact"}
+          New {activeTab === MESSAGES_KEY ? "Message" : "Contact"}
         </Button>
         <Modal open={modalOpen} onClose={closeModal}>
-          {messageOpen ? (
+          {activeTab === MESSAGES_KEY ? (
             <NewMessageModal closeModal={closeModal} />
           ) : (
-            <NewContactModal closeModal={closeModal} />
+            <UserSearch closeModal={closeModal} onAddFriend={handleAddFriend} />
           )}
         </Modal>
       </Box>
@@ -83,7 +89,9 @@ export default function SideBar({ user, setUser }) {
         </Button>
       </Box>
       <Box className="border-right overflow-auto flex-grow-1">
-        {activeTab === MESSAGES_KEY ? <MessagesSideBar /> : <Contacts />}
+        {activeTab === MESSAGES_KEY ? <MessagesSideBar /> : (
+          activeTab === CONTACTS_KEY ? <Contacts contacts={contacts} /> : <UserSearch closeModal={closeModal} onAddFriend={handleAddFriend} />
+        )}
       </Box>
     </Paper>
   );
