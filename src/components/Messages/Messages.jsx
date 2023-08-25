@@ -60,10 +60,6 @@ export default function Messages() {
     justifyContent: "flex-end",
   };
 
-  const textFieldStyle = {
-    flexGrow: 1,
-  };
-
   return (
     <Paper style={messagesContainerStyle}>
       <List>
@@ -78,10 +74,8 @@ export default function Messages() {
           value={message}
           placeholder="Start Typing..."
           fullWidth
-          margin="normal"
           multiline
           rows={5}
-          style={textFieldStyle}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

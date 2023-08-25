@@ -9,7 +9,7 @@ export default function Dashboard({ user, setUser }) {
   // const [user, setUser] = useState(getUser());
 
   return (
-    <Grid container sx={{ height: "100vh" }}>
+    <Grid container sx={{ height: "95vh" }}>
       <Grid item xs={6} s={3} md={2}>
         <SideBar user={user} setUser={setUser} />
       </Grid>
