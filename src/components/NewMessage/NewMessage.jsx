@@ -7,12 +7,13 @@ import {
   Box,
   InputAdornment,
 } from "@mui/material";
+import UserAutoFill from "../UserAutoFill/UserAutoFill";
 import { io } from "socket.io-client";
 import Messages from "../Messages/Messages";
 import * as userService from "../../utilities/users-api";
 
 export default function NewMessageModal({ closeModal }) {
-  const [recipient, setRecipient] = useState("");
+  const [selectedUser, setSelectedUser] = useState("");
   const [message, setMessage] = useState("");
   const socketRef = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -36,17 +37,32 @@ export default function NewMessageModal({ closeModal }) {
     };
   }, []);
 
-  const handleRecipientChange = (event) => {
-    setRecipient(event.target.value);
+  const handleMessageChange = (event) => {
+    setMessage(event.target.value);
   };
 
-  const handleSendMessage = () => {
-    socketRef.current.emit("newMessage", messages);
-    setMessage("");
-    // Implement sending logic here
-    console.log("Sending message:", messages);
-    closeModal();
+  const handleSelectUser = (user) => {
+    setSelectedUser(user.name);
+    console.log(user.name);
   };
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    // Emit the message along with the selected recipient through the socket
+    socketRef.current.emit("newMessage", {
+      selectedUser: selectedUser,
+      message: message,
+    });
+
+    // Clear the input fields after emitting the message
+    setMessage("");
+    setSelectedUser("");
+
+    console.log("MSG:", message);
+    console.log("selectedUser:", selectedUser);
+    closeModal();
+  }
 
   return (
     <Modal
@@ -58,11 +74,14 @@ export default function NewMessageModal({ closeModal }) {
         <Typography variant="h6" gutterBottom>
           New Message
         </Typography>
+        <Button>
+          <UserAutoFill handleSelectUser={handleSelectUser} />
+        </Button>
         <TextField
           sx={{ height: "100%", width: "100%" }}
           label="Start typing..."
-          value={recipient}
-          onChange={handleRecipientChange}
+          value={message}
+          onChange={handleMessageChange}
           fullWidth
           margin="normal"
           multiline
@@ -70,7 +89,7 @@ export default function NewMessageModal({ closeModal }) {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <Button variant="contained" onClick={handleSendMessage}>
+                <Button variant="contained" onClick={handleSubmit}>
                   Send
                 </Button>
               </InputAdornment>

@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material/";
 
-function Search() {
+function UserAutoFill({ handleSelectUser }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -27,6 +27,7 @@ function Search() {
 
   const handleAddUser = (user) => {
     setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, user]);
+    handleSelectUser(user);
   };
 
   const handleRemoveUser = (userToRemove) => {
@@ -36,7 +37,7 @@ function Search() {
   };
 
   return (
-    <div className="search-container">
+    <div>
       <Autocomplete
         freeSolo
         sx={{ width: 280 }}
@@ -81,4 +82,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default UserAutoFill;

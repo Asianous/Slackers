@@ -27,6 +27,15 @@ export default function Search({ closeModal }) {
     setIsLoading(false);
   };
 
+  const handleAddFriend = async (userId) => {
+    try {
+      console.log(`Adding ${userId} as a friend`);
+      // onAddFriend(userId);
+    } catch (error) {
+      console.error('Failed to add friend:', error);
+    }
+  };
+
   return (
     <Modal
       open={true}

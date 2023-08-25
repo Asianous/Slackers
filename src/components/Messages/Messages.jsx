@@ -43,21 +43,21 @@ export default function Messages() {
       setMessages((m) => [...m, message]);
       socketRef.current.emit("newMessage", message);
       setMessage("");
+      console.log("Sending message:", message);
     }
   }
 
   const messagesContainerStyle = {
-    position: "fixed",
+    // position: "fixed",
     bottom: 0,
     right: 0,
-    width: "650px",
-    height: "96vh",
-    backgroundColor: "white",
-    padding: "10px",
-    margin: "10px",
+    // width: "60%",
+    height: "98vh",
+    // padding: "5px",
+    // margin: "10px",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
   };
 
   const textFieldStyle = {
