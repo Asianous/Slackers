@@ -10,6 +10,8 @@ import { io } from "socket.io-client";
 import SideBar from '../../components/SideBar/SideBar';
 import Profile from "../../pages/Profile/profile";
 import Search from "../../components/UserSearch/Search";
+import Messages from "../../components/Messages/Messages";
+import Dashboard from "../../components/Dashboard/Dashboard";
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -22,7 +24,7 @@ export default function App() {
             {/* Route components in here */}
             <Route
               path="/"
-              element={<SideBar user={user} setUser={setUser} />}
+              element={<Dashboard user={user} setUser={setUser} />}
             />
             <Route path="/profile" element={<Profile />} />
             <Route path="/search" element={<Search />} />
