@@ -51,7 +51,7 @@ export default function SideBar({ user, setUser }) {
         <Button
           onClick={openModal}
           color="primary"
-          variant="outlined"
+          variant="contained"
           fullWidth
         >
           New {messageOpen ? "Message" : "Contact"}
