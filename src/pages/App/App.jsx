@@ -3,14 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import { getUser } from '../../utilities/users-service';
 import './App.css';
 import AuthPage from "../AuthPage/AuthPage";
-import NavBar from '../../components/NavBar/NavBar';
-import GroupChat from '../GroupChat/Group';
-import MessagePage from "../MessagePage/MessagePage";
 import { io } from "socket.io-client";
-import SideBar from '../../components/SideBar/SideBar';
 import Profile from "../../pages/Profile/profile";
 import Search from "../../components/UserSearch/Search";
-import Messages from "../../components/Messages/Messages";
 import Dashboard from "../../components/Dashboard/Dashboard";
 
 export default function App() {

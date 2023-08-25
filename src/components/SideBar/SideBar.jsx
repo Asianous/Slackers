@@ -7,7 +7,6 @@ import NewMessageModal from "../NewMessage/NewMessage";
 import * as userService from "../../utilities/users-service";
 import UserSearch from "../UserSearch/Search";
 import { Link } from "react-router-dom";
-import Messages from "../Messages/Messages";
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
