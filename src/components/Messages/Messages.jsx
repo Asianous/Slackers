@@ -43,6 +43,7 @@ export default function Messages() {
       setMessages((m) => [...m, message]);
       socketRef.current.emit("newMessage", message);
       setMessage("");
+      console.log("Sending message:", message);
     }
   }
 

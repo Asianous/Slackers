@@ -99,7 +99,7 @@ export default function SideBar({ user, setUser }) {
         }}
       >
         <Typography variant="body2">
-          Logged in as: <span className="text-muted">{user.name}</span>
+          Logged in as: {user.name}
           <Button component={Link} to="/profile">
             Profile
           </Button>

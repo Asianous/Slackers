@@ -21,7 +21,7 @@ export async function checkToken() {
 export async function searchUsers(query) {
   try{
     const res = await sendRequest(`/api/search?q=${query}`);
-    console.log(res)
+    // console.log(res)
     return res;
   }
   catch(error){
