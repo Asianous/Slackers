@@ -67,7 +67,7 @@ export default function SideBar({ user, setUser }) {
         sx={{
           p: 0,
           position: "absolute",
-          bottom: 10,
+          bottom: 1,
           width: "100%",
         }}
       >
@@ -92,7 +92,7 @@ export default function SideBar({ user, setUser }) {
         sx={{
           p: 0,
           position: "absolute",
-          bottom: 46,
+          bottom: 38,
           width: "100%",
           borderBottom: 1,
           borderColor: "grey.300",
