@@ -36,7 +36,7 @@ function Search() {
   };
 
   return (
-    <div className="search-container">
+    <div>
       <Autocomplete
         freeSolo
         sx={{ width: 280 }}
