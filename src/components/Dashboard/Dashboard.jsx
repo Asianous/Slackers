@@ -8,7 +8,7 @@ import { Box } from "@mui/system";
 export default function Dashboard() {
   const [user, setUser] = useState(getUser());
   return (
-    <Box sx={{ display: "flex", height: "95vh" }}>
+    <Box sx={{ display: "flex", height: "98vh" }}>
       <SideBar user={user} setUser={setUser} />
       <Message />
     </Box>

@@ -1,7 +1,14 @@
 import { io } from "socket.io-client";
-import React from "react";
-import { useState, useEffect, useRef } from "react";
-import { List, ListItem, TextField, Button } from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  List,
+  ListItem,
+  TextField,
+  Paper,
+  InputAdornment,
+  Button,
+} from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 
 export default function Messages() {
   const [messages, setMessages] = useState([]);
@@ -14,7 +21,7 @@ export default function Messages() {
       socketRef.current = io();
     }
     socket = socketRef.current;
-    // console.log("Socket connected", socketRef.current.connected);
+
     socket.on("newMessage", (msg) => {
       setMessages((messages) => [...messages, msg]);
       console.log(msg);
@@ -32,12 +39,33 @@ export default function Messages() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setMessages((m) => [...m, message]);
-    socketRef.current.emit("newMessage", message);
-    setMessage("");
+    if (message.trim() !== "") {
+      setMessages((m) => [...m, message]);
+      socketRef.current.emit("newMessage", message);
+      setMessage("");
+    }
   }
+
+  const messagesContainerStyle = {
+    position: "fixed",
+    bottom: 0,
+    right: 0,
+    width: "650px",
+    height: "96vh",
+    backgroundColor: "white",
+    padding: "10px",
+    margin: "10px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  };
+
+  const textFieldStyle = {
+    flexGrow: 1,
+  };
+
   return (
-    <div>
+    <Paper style={messagesContainerStyle}>
       <List>
         {messages.map((msg, idx) => (
           <ListItem key={idx}>{msg}</ListItem>
@@ -53,11 +81,27 @@ export default function Messages() {
           margin="normal"
           multiline
           rows={5}
+          style={textFieldStyle}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Button
+                  type="submit"
+                  style={{ border: "none", background: "none" }}
+                >
+                  <SendIcon color="primary" />
+                </Button>
+              </InputAdornment>
+            ),
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit(e);
+            }
+          }}
         />
-        <Button type="submit" variant="contained">
-          Send
-        </Button>
       </form>
-    </div>
+    </Paper>
   );
 }
