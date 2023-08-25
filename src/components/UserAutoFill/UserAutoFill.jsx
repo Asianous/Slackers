@@ -7,11 +7,14 @@ import {
   List,
   ListItem,
   ListItemText,
+  Chip,
+  Typography,
 } from "@mui/material/";
 
 function Search() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
 
   const handleSearch = async () => {
     try {
@@ -20,6 +23,16 @@ function Search() {
     } catch (error) {
       console.error("Failed to fetch users:", error);
     }
+  };
+
+  const handleAddUser = (user) => {
+    setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, user]);
+  };
+
+  const handleRemoveUser = (userToRemove) => {
+    setSelectedUsers((prevSelectedUsers) =>
+      prevSelectedUsers.filter((user) => user !== userToRemove)
+    );
   };
 
   return (
@@ -45,10 +58,25 @@ function Search() {
         {searchResults.map((user, index) => (
           <ListItem key={index}>
             <ListItemText primary={user.name} />
-            <Button variant="contained">+</Button>
+            <Button variant="contained" onClick={() => handleAddUser(user)}>
+              +
+            </Button>
           </ListItem>
         ))}
       </List>
+      <div>
+        <Typography>Selected User(s):</Typography>
+        <div>
+          {selectedUsers.map((user, index) => (
+            <Chip
+              key={index}
+              label={user.name}
+              variant="outlined"
+              onDelete={() => handleRemoveUser(user)}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
