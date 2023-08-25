@@ -116,10 +116,14 @@ export default function SideBar({ user, setUser }) {
           width: "100%",
           overflowY: "auto", // Allow content to scroll if necessary
         }}
-      >
+      ></Box>
       <Box className="border-right overflow-auto flex-grow-1">
-        {activeTab === MESSAGES_KEY ? <MessagesSideBar /> : (
-          activeTab === CONTACTS_KEY ? <Contacts contacts={contacts} /> : <UserSearch closeModal={closeModal} onAddFriend={handleAddFriend} />
+        {activeTab === MESSAGES_KEY ? (
+          <MessagesSideBar />
+        ) : activeTab === CONTACTS_KEY ? (
+          <Contacts contacts={contacts} />
+        ) : (
+          <UserSearch closeModal={closeModal} onAddFriend={handleAddFriend} />
         )}
       </Box>
     </Paper>
