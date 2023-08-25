@@ -1,37 +1,48 @@
-import React, { useState, useEffect } from 'react';
-
-const ACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
+import React, { useState } from 'react';
+import  {updatePassword}  from '../../utilities/users-service'
 
 function UserProfile() {
-  const [lastInteraction, setLastInteraction] = useState(Date.now());
+  const [profilePicture, setProfilePicture] = useState(null);
   const [isActive, setIsActive] = useState(false);
+  const [username, setUsername] = useState('');
+  const [showChangePasswordForm, setShowChangePasswordForm] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const currentTime = Date.now();
-      const timeDifference = currentTime - lastInteraction;
-      setIsActive(timeDifference < ACTIVITY_TIMEOUT);
-    }, 60000); // Update every minute
+  const handleSubmitChangePassword = (event) => {
+    event.preventDefault();
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [lastInteraction]);
+    // Get the values from the form fields
+    const oldPassword = event.target.oldPassword.value;
+    const newPassword = event.target.newPassword.value;
 
-  const handleInteraction = () => {
-    setLastInteraction(Date.now());
-    // Send a request to the server to update the "last active" timestamp
-    // This step needs to be implemented on the server side.
+    // Call the function to change the password
+    handleChangePassword(oldPassword, newPassword);
+
+    // Clear the form and hide it
+    event.target.reset();
+    setShowChangePasswordForm(false);
   };
+
+  const handleChangePassword = async (oldPassword, newPassword) => {
+  const response = await updatePassword({oldPassword, newPassword})
+    // Here you would call your authentication service or API to change the password
+    // Implement proper security measures for changing passwords
+    // Display a success message to the user
+    console.log(response);
+  };
+
 
   return (
     <div className="user-profile">
-      <div className="profile-picture">
-        {/* Your profile picture rendering logic */}
-        {isActive && <div className="active-indicator" />}
-      </div>
-      <div className="username">Username</div>
-      <button onClick={handleInteraction}>Interact with App</button>
+      {/* ...other profile display elements... */}
+      <button onClick={() => setShowChangePasswordForm(true)}>Change Password</button>
+
+      {showChangePasswordForm && (
+        <form onSubmit={handleSubmitChangePassword}>
+          <input type="password" name="oldPassword" placeholder="Old Password" />
+          <input type="password" name="newPassword" placeholder="New Password" />
+          <button type="submit">Change Password</button>
+        </form>
+      )}
     </div>
   );
 }

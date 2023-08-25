@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Tabs, Tab, Button, Modal, Typography, Paper, Box } from "@mui/material";
-import Messages from "../Messages/Messages";
+import MessagesSideBar from "../MessagesSideBar/MessagesSideBar";
 import Contacts from "../Contacts/Contacts";
 import NewContactModal from '../NewContact/NewContact';
 import NewMessageModal from '../NewMessage/NewMessage';
 import UserSearch from '../UserSearch/Search'; 
 import * as userService from "../../utilities/users-service";
+import UserSearch from "../UserSearch/Search";
+import { Link } from "react-router-dom";
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
-const USER_SEARCH_KEY = 'userSearch'; 
+const USER_SEARCH_KEY = "userSearch";
 
 export default function SideBar({ user, setUser }) {
   const [activeTab, setActiveTab] = useState(MESSAGES_KEY);
@@ -34,7 +36,7 @@ export default function SideBar({ user, setUser }) {
   }
 
   return (
-    <Paper style={{ width: "250px", height: "95vh", position: "relative" }}>
+    <Paper style={{ width: "250px", position: "relative" }}>
       <Tabs
         value={activeTab}
         onChange={handleTabChange}
@@ -50,7 +52,7 @@ export default function SideBar({ user, setUser }) {
         <Button
           onClick={openModal}
           color="primary"
-          variant="outlined"
+          variant="contained"
           fullWidth
         >
           New {messageOpen ? "Message" : "Contact"}
@@ -73,15 +75,16 @@ export default function SideBar({ user, setUser }) {
       >
         <Typography variant="body2">
           Logged in as: <span className="text-muted">{user.name}</span>
+          <Button>
+            <Link to="/profile">Profile</Link>
+          </Button>
         </Typography>
         <Button to="" onClick={handleLogOut}>
           Log Out
         </Button>
       </Box>
       <Box className="border-right overflow-auto flex-grow-1">
-        {activeTab === MESSAGES_KEY ? <Messages /> : (
-          activeTab === CONTACTS_KEY ? <Contacts /> : <UserSearch />
-        )}
+        {activeTab === MESSAGES_KEY ? <MessagesSideBar /> : <Contacts />}
       </Box>
     </Paper>
   );
