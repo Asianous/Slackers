@@ -9,52 +9,53 @@ import {
   Button,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import { createMessage } from "../../utilities/message-api";
 
-export default function Messages() {
+export default function Messages({ selectedUser, socket, user }) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const socketRef = useRef(null);
-  let socket;
+  const socketRef = useRef(socket);
 
   useEffect(() => {
-    if (!socket) {
-      socketRef.current = io();
-    }
-    socket = socketRef.current;
-
-    socket.on("newMessage", (msg) => {
-      setMessages((messages) => [...messages, msg]);
-      console.log(msg);
+    socket.on("newMessage", (data) => {
+      console.log("Received new message:", data.content);
+      setMessages((prevMessages) => [...prevMessages, data]);
     });
 
+    // Join the room based on the recipient's username
+    socket.emit("joinRoom", socket.id, selectedUser);
+
     return () => {
-      socket.removeAllListeners("newMessage");
-      socket.disconnect();
+      // Leave the room when the component unmounts
+      socket.emit("leaveRoom", selectedUser);
     };
-  }, []);
+  }, [selectedUser]);
 
   function handleChange(e) {
     setMessage(e.target.value);
   }
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (message.trim() !== "") {
-      setMessages((m) => [...m, message]);
-      socketRef.current.emit("newMessage", message);
-      setMessage("");
-      console.log("Sending message:", message);
-    }
-  }
+
+    const newMessage = {
+      content: message,
+      sender: user.name,
+      // recipients: selectedUsers,
+    };
+
+    // Emit the message along with the selected recipient through the socket
+    socketRef.current.emit("newMessage", newMessage);
+
+    // Clear the input fields after emitting the message
+    setMessage("");
+    createMessage(newMessage);
+  };
 
   const messagesContainerStyle = {
-    // position: "fixed",
     bottom: 0,
     right: 0,
-    // width: "60%",
     height: "98vh",
-    // padding: "5px",
-    // margin: "10px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-end",
@@ -64,7 +65,12 @@ export default function Messages() {
     <Paper style={messagesContainerStyle}>
       <List>
         {messages.map((msg, idx) => (
-          <ListItem key={idx}>{msg}</ListItem>
+          <ListItem
+            key={idx}
+            style={msg.sender === user.name ? { color: "green" } : {}}
+          >
+            {msg.content}
+          </ListItem>
         ))}
       </List>
       <form onSubmit={handleSubmit}>
