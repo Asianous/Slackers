@@ -7,7 +7,6 @@ import {
   Box,
   InputAdornment,
 } from "@mui/material";
-import { io } from "socket.io-client";
 import UserAutoFill from "../UserAutoFill/UserAutoFill";
 import Messages from "../Messages/Messages";
 import { createMessage } from "../../utilities/message-api";
@@ -15,24 +14,8 @@ import { createMessage } from "../../utilities/message-api";
 export default function NewMessageModal({ closeModal, socket, user }) {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [message, setMessage] = useState("");
-  // const [messages, setMessages] = useState([]);
   const [messageSent, setMessageSent] = useState(false);
   const socketRef = useRef(socket);
-
-  // useEffect(() => {
-  //   // const socket = io("http://localhost:3001");
-  //   // socketRef.current = socket;
-
-  //   socket.on("newMessage", (msg) => {
-  //     setMessages((prevMessages) => [...prevMessages, msg]);
-  //     // console.log("NewMessageModal: Received new message:", msg);
-  //   });
-
-  //   return () => {
-  //     socket.removeAllListeners("newMessage");
-  //     socket.disconnect();
-  //   };
-  // }, []);
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
@@ -52,11 +35,8 @@ export default function NewMessageModal({ closeModal, socket, user }) {
       recipients: selectedUsers,
     };
 
-    // Emit the message along with the selected recipient through the socket
-    socketRef.current.emit("newMessage", newMessage);
-
-    // Add the sent message to the messages state
-    // setMessages((prevMessages) => [...prevMessages, newMessage]);
+    // Emit the message to the server, which will handle room creation
+    socketRef.current.emit("newConvo", newMessage);
 
     // Clear the input fields after emitting the message
     setMessage("");
@@ -64,8 +44,8 @@ export default function NewMessageModal({ closeModal, socket, user }) {
     setMessageSent(true);
     closeModal();
     createMessage(newMessage);
-    // console.log("NewMessageModal: Emitting new message:", newMessage);
   };
+  // console.log("NewMessageModal: Emitting new message:", newMessage);
 
   return (
     <Modal

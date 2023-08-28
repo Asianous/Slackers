@@ -17,8 +17,8 @@ export default function Messages({ selectedUser, socket, user }) {
   const socketRef = useRef(socket);
 
   useEffect(() => {
-    socket.on("newMessage", (data) => {
-      console.log("Received new message:", data.content);
+    socket.on("newConvo", (data, roomId) => {
+      console.log("Received new message:", data, roomId);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
 
@@ -41,11 +41,11 @@ export default function Messages({ selectedUser, socket, user }) {
     const newMessage = {
       content: message,
       sender: user.name,
-      // recipients: selectedUsers,
+      recipients: selectedUser,
     };
 
     // Emit the message along with the selected recipient through the socket
-    socketRef.current.emit("newMessage", newMessage);
+    socketRef.current.emit("newConvo", newMessage);
 
     // Clear the input fields after emitting the message
     setMessage("");
@@ -67,7 +67,7 @@ export default function Messages({ selectedUser, socket, user }) {
         {messages.map((msg, idx) => (
           <ListItem
             key={idx}
-            style={msg.sender === user.name ? { color: "green" } : {}}
+            style={msg.sender === user?.name ? { color: "green" } : {}}
           >
             {msg.content}
           </ListItem>

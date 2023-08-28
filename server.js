@@ -4,6 +4,7 @@ const favicon = require("serve-favicon");
 const logger = require("morgan");
 const socketIO = require("socket.io"); // Import Socket.IO
 const userRoutes = require("./routes/api/users");
+const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 require("./config/database");
 
@@ -32,17 +33,32 @@ const server = app.listen(port, function () {
 const io = require("./config/socket").init(server);
 
 const connectedSockets = {};
+const rooms = {};
 
 io.on("connection", (socket) => {
+  const roomId = uuidv4();
   console.log(`${socket.id} is connected`);
   connectedSockets[socket.id] = socket;
 
-  socket.on("newMessage", (data) => {
+  socket.on("newConvo", (data) => {
     console.log("NEW MSG DATA", data);
+    socket.join(roomId);
+
+    rooms[roomId] = {
+      participants: [data.sender, ...data.recipients],
+    };
+
     // if (connectedSockets[data.recipient]) {
     //   connectedSockets[data.recipient].emit("newMessage", data);
     // }
-    socket.broadcast.emit("newMessage", data);
+    // socket.emit("newMessage", data, roomId);
+    io.to(roomId).emit("newConvo", data, roomId);
+
+    io.emit("updatedRooms", Object.keys(rooms));
+  });
+
+  socket.on("getRooms", () => {
+    socket.emit("updatedRooms", Object.keys(rooms));
   });
 
   socket.on("disconnect", () => {
