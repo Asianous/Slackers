@@ -14,7 +14,7 @@ const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
 const USER_SEARCH_KEY = "userSearch";
 
-export default function SideBar({ user, setUser }) {
+export default function SideBar({ user, setUser, socket }) {
   const [activeTab, setActiveTab] = useState(MESSAGES_KEY);
   const [modalOpen, setModalOpen] = useState(false);
   const [contacts, setContacts] = useState([]); // State to store contacts
@@ -22,6 +22,12 @@ export default function SideBar({ user, setUser }) {
   const theme = createTheme({
     palette: {
       lightPurple: {
+        main: "#ADA9FC",
+        light: "#c4c2fd",
+        dark: "#7e78fa",
+        contrastText: "#242105",
+      },
+      primary: {
         main: "#ADA9FC",
         light: "#c4c2fd",
         dark: "#7e78fa",
@@ -67,6 +73,8 @@ export default function SideBar({ user, setUser }) {
         }}
       >
         <Tabs
+          textColor="primary"
+          indicatorColor="primary"
           value={activeTab}
           onChange={handleTabChange}
           variant="fullWidth"
@@ -95,7 +103,11 @@ export default function SideBar({ user, setUser }) {
           </Button>
           <Modal open={modalOpen} onClose={closeModal}>
             {activeTab === MESSAGES_KEY ? (
-              <NewMessageModal closeModal={closeModal} />
+              <NewMessageModal
+                socket={socket}
+                user={user}
+                closeModal={closeModal}
+              />
             ) : (
               <UserSearch
                 closeModal={closeModal}
@@ -114,7 +126,7 @@ export default function SideBar({ user, setUser }) {
             borderColor: "grey.300",
           }}
         >
-          <Typography variant="body2">
+          <Typography color="primary.dark" variant="body2">
             Logged in as: {user.name}
             <Button
               color="lightPurple"

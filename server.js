@@ -1,8 +1,9 @@
-const express = require('express');
-const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
+const express = require("express");
+const path = require("path");
+const favicon = require("serve-favicon");
+const logger = require("morgan");
 const socketIO = require("socket.io"); // Import Socket.IO
+const userRoutes = require("./routes/api/users");
 require("dotenv").config();
 require("./config/database");
 
@@ -18,7 +19,7 @@ app.use(require("./config/checkToken"));
 const port = process.env.PORT || 3001;
 
 app.use("/api/users", require("./routes/api/users"));
-app.use("/api/message", require("./routes/api/message"));
+app.use("/api/messages", require("./routes/api/messages"));
 app.use("/api/search", require("./routes/api/search"));
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
@@ -30,13 +31,22 @@ const server = app.listen(port, function () {
 
 const io = require("./config/socket").init(server);
 
+const connectedSockets = {};
+
 io.on("connection", (socket) => {
-  socket.on("newMessage", (msg) => {
-    socket.broadcast.emit("newMessage", msg);
-  });
   console.log(`${socket.id} is connected`);
+  connectedSockets[socket.id] = socket;
+
+  socket.on("newMessage", (data) => {
+    console.log("NEW MSG DATA", data);
+    // if (connectedSockets[data.recipient]) {
+    //   connectedSockets[data.recipient].emit("newMessage", data);
+    // }
+    socket.broadcast.emit("newMessage", data);
+  });
 
   socket.on("disconnect", () => {
     console.log(`${socket.id} has disconnected`);
+    delete connectedSockets[socket.id];
   });
 });
