@@ -1,48 +1,124 @@
 import React, { useState } from 'react';
-import  {updatePassword}  from '../../utilities/users-service'
+import { Button, TextField, Typography } from '@mui/material';
+import { updatePassword } from '../../utilities/users-service';
 
 function UserProfile() {
-  const [profilePicture, setProfilePicture] = useState(null);
-  const [isActive, setIsActive] = useState(false);
-  const [username, setUsername] = useState('');
   const [showChangePasswordForm, setShowChangePasswordForm] = useState(false);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmitChangePassword = (event) => {
+  const handleSubmitChangePassword = async (event) => {
     event.preventDefault();
 
-    // Get the values from the form fields
-    const oldPassword = event.target.oldPassword.value;
-    const newPassword = event.target.newPassword.value;
+    try {
+      const response = await updatePassword({ oldPassword, newPassword });
+      setSuccessMessage('Password updated successfully.');
+      setErrorMessage('');
+      // Clear the form and hide it
+      setOldPassword('');
+      setNewPassword('');
+      setShowChangePasswordForm(false);
+    } catch (error) {
+      setSuccessMessage('');
+      setErrorMessage('Failed to update password. Please try again.');
+    }
+  };
 
-    // Call the function to change the password
-    handleChangePassword(oldPassword, newPassword);
-
-    // Clear the form and hide it
-    event.target.reset();
+  const handleGoBack = () => {
     setShowChangePasswordForm(false);
+    setSuccessMessage('');
+    setErrorMessage('');
   };
-
-  const handleChangePassword = async (oldPassword, newPassword) => {
-  const response = await updatePassword({oldPassword, newPassword})
-    // Here you would call your authentication service or API to change the password
-    // Implement proper security measures for changing passwords
-    // Display a success message to the user
-    console.log(response);
-  };
-
 
   return (
     <div className="user-profile">
       {/* ...other profile display elements... */}
-      <button onClick={() => setShowChangePasswordForm(true)}>Change Password</button>
+      {!showChangePasswordForm && (
+        <Button
+          onClick={() => setShowChangePasswordForm(true)}
+          variant="contained"
+          fullWidth
+          style={{
+            backgroundColor: '#ADA9FC',
+            color: 'white',
+            marginTop: '2vmin',
+          }}
+        >
+          Change Password
+        </Button>
+      )}
 
       {showChangePasswordForm && (
         <form onSubmit={handleSubmitChangePassword}>
-          <input type="password" name="oldPassword" placeholder="Old Password" />
-          <input type="password" name="newPassword" placeholder="New Password" />
-          <button type="submit">Change Password</button>
+          <TextField
+            label="Old Password"
+            variant="outlined"
+            type="password"
+            value={oldPassword}
+            onChange={(event) => setOldPassword(event.target.value)}
+            fullWidth
+            sx={{ marginBottom: '1rem', marginTop: '2vmin' }}
+          />
+          <TextField
+            label="New Password"
+            variant="outlined"
+            type="password"
+            value={newPassword}
+            onChange={(event) => setNewPassword(event.target.value)}
+            fullWidth
+            sx={{ marginBottom: '1rem' }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button
+              onClick={handleGoBack}
+              variant="contained"
+              style={{ 
+                backgroundColor: '#ADA9FC',
+                color: 'white',
+                width: '48%',
+              }}
+            >
+              Back
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              style={{
+                backgroundColor: '#ADA9FC',
+                color: 'white',
+                width: '48%',
+              }}
+            >
+              Submit New Password
+            </Button>
+          </div>
         </form>
       )}
+
+      <Typography
+        variant="body2"
+        sx={{
+          fontFamily: 'Arial, sans-serif',
+          fontSize: '2vmin',
+          color: 'green',
+          marginTop: '2vmin',
+        }}
+      >
+        {successMessage}
+      </Typography>
+      <Typography
+        variant="body2"
+        sx={{
+          fontFamily: 'Arial, sans-serif',
+          fontSize: '2vmin',
+          color: 'red',
+          marginTop: '2vmin',
+        }}
+      >
+        {errorMessage}
+      </Typography>
     </div>
   );
 }
