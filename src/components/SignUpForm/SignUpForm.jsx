@@ -36,7 +36,11 @@ export default class SignUpForm extends Component {
     const errorMessageStyle = {
       fontFamily: 'Arial, sans-serif',
       color: 'red',
-      fontsize: '2vmin',
+      fontSize: '2vmin',
+    };
+
+    const handleSwitchToLogIn = () => {
+      this.props.setShowSignUp(!this.props.showSignUp);
     };
 
     return (
@@ -83,16 +87,27 @@ export default class SignUpForm extends Component {
               fullWidth
               margin="normal"
             />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              disabled={disable}
-              fullWidth
-              style={{ marginTop: '1rem', backgroundColor: '#ADA9FC', color: 'white' }}
-            >
-              SIGN UP
-            </Button>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={handleSwitchToLogIn}
+                style={{ marginTop: '1rem', backgroundColor: '#ADA9FC', color: 'white', width: '48%' }}
+              >
+                Switch to Log In
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={disable}
+                fullWidth
+                style={{ marginTop: '1rem', backgroundColor: '#ADA9FC', color: 'white', width: '48%' }}
+              >
+                SIGN UP
+              </Button>
+            </div>
           </form>
         </div>
         <p className="error-message" style={errorMessageStyle}>&nbsp;{this.state.error}</p>
