@@ -7,6 +7,7 @@ import { io } from "socket.io-client";
 import Profile from "../../pages/Profile/profile";
 import Dashboard from "../../components/Dashboard/Dashboard";
 import { useEffect, useRef } from "react";
+import axios from "axios";
 
 export default function App() {
   const [user, setUser] = useState(getUser());

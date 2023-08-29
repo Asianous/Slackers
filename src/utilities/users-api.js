@@ -19,11 +19,6 @@ export async function checkToken() {
   return sendRequest(`${BASE_URL}/check-token`);
 }
 
-// export async function search(query) {
-//   return sendRequest(`api/search`, 'GET');
-// }
-
-
 export async function searchUsers(query) {
   try{
     const res = await sendRequest(`/api/search?q=${query}`);
@@ -88,3 +83,4 @@ export async function addFriend(userId) {
 export async function removeFriend(userId) {
   return sendRequest(`${BASE_URL}/remove-friend/${userId}`, 'DELETE');
 }
+

@@ -4,6 +4,7 @@ const favicon = require("serve-favicon");
 const logger = require("morgan");
 const socketIO = require("socket.io"); // Import Socket.IO
 const userRoutes = require("./routes/api/users");
+const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 require("./config/database");
 
@@ -32,20 +33,33 @@ const server = app.listen(port, function () {
 const io = require("./config/socket").init(server);
 
 const connectedSockets = {};
+const rooms = {};
 
 io.on("connection", (socket) => {
   console.log(`${socket.id} is connected`);
   connectedSockets[socket.id] = socket;
 
-  socket.on("newMessage", (data) => {
+  socket.on("newConvo", (data) => {
+    const roomId = uuidv4();
     console.log("NEW MSG DATA", data);
-    // if (connectedSockets[data.recipient]) {
-    //   connectedSockets[data.recipient].emit("newMessage", data);
-    // }
-    socket.broadcast.emit("newMessage", data);
+    socket.join(roomId);
+
+    rooms[roomId] = {
+      participants: [data.sender, ...data.recipients], // Store participants' names
+    };
+
+    io.to(roomId).emit("newConvo", data, roomId);
+
+    io.emit("updatedRooms", Object.keys(rooms));
+  });
+
+  socket.on("getRooms", () => {
+    socket.emit("updatedRooms", Object.keys(rooms));
+    console.log("Avaible Rooms: ", rooms);
   });
 
   socket.on("disconnect", () => {
+    // axios.delete("/sockets", { socket: socket.id });
     console.log(`${socket.id} has disconnected`);
     delete connectedSockets[socket.id];
   });

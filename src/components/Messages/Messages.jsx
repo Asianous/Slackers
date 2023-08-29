@@ -7,6 +7,7 @@ import {
   Paper,
   InputAdornment,
   Button,
+  Typography,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { createMessage } from "../../utilities/message-api";
@@ -17,8 +18,8 @@ export default function Messages({ selectedUser, socket, user }) {
   const socketRef = useRef(socket);
 
   useEffect(() => {
-    socket.on("newMessage", (data) => {
-      console.log("Received new message:", data.content);
+    socket.on("newConvo", (data, roomId) => {
+      console.log("Received new message:", data, roomId);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
 
@@ -41,11 +42,11 @@ export default function Messages({ selectedUser, socket, user }) {
     const newMessage = {
       content: message,
       sender: user.name,
-      // recipients: selectedUsers,
+      recipients: selectedUser,
     };
 
     // Emit the message along with the selected recipient through the socket
-    socketRef.current.emit("newMessage", newMessage);
+    socketRef.current.emit("newConvo", newMessage);
 
     // Clear the input fields after emitting the message
     setMessage("");
@@ -63,17 +64,67 @@ export default function Messages({ selectedUser, socket, user }) {
 
   return (
     <Paper style={messagesContainerStyle}>
-      <List>
+      <List style={{ padding: 0 }}>
         {messages.map((msg, idx) => (
           <ListItem
             key={idx}
-            style={msg.sender === user.name ? { color: "green" } : {}}
+            style={{
+              display: "flex",
+              justifyContent:
+                msg.sender === user?.name ? "flex-end" : "flex-start",
+              paddingBottom: "8px",
+            }}
           >
-            {msg.content}
+            {/* Display sender's first letter in a circle */}
+            <div
+              style={{
+                width: "30px",
+                height: "30px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "50%",
+                background: msg.sender === user?.name ? "#DCF8C6" : "#F3F3F3",
+                color: "#fff",
+                fontWeight: "bold",
+                fontSize: "16px",
+                marginRight: "10px",
+              }}
+            >
+              {msg.sender[0].toUpperCase()}
+            </div>
+
+            {/* Message content */}
+            <div
+              style={{
+                background: msg.sender === user?.name ? "#DCF8C6" : "#F3F3F3",
+                padding: "10px 15px",
+                borderRadius:
+                  msg.sender === user?.name
+                    ? "10px 0 10px 10px"
+                    : "0 10px 10px 10px",
+                maxWidth: "70%",
+                wordWrap: "break-word",
+              }}
+            >
+              <Typography
+                variant="body1"
+                style={{
+                  whiteSpace: "pre-line",
+                  fontSize: "20px",
+                  lineHeight: "1.4",
+                }}
+              >
+                {msg.content}
+              </Typography>
+            </div>
           </ListItem>
         ))}
       </List>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", marginTop: "10px" }}
+      >
         <TextField
           type="text"
           onChange={handleChange}
@@ -81,7 +132,8 @@ export default function Messages({ selectedUser, socket, user }) {
           placeholder="Start Typing..."
           fullWidth
           multiline
-          rows={5}
+          rows={1}
+          style={{ flexGrow: 1, marginRight: "10px" }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
