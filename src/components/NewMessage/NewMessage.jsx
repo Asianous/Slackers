@@ -11,6 +11,7 @@ import { io } from "socket.io-client";
 import UserAutoFill from "../UserAutoFill/UserAutoFill";
 import Messages from "../Messages/Messages";
 import { createMessage } from "../../utilities/message-api";
+import * as userService from "../../utilities/users-api";
 
 export default function NewMessageModal({ closeModal, socket, user }) {
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -27,7 +28,26 @@ export default function NewMessageModal({ closeModal, socket, user }) {
   //     setMessages((prevMessages) => [...prevMessages, msg]);
   //     // console.log("NewMessageModal: Received new message:", msg);
   //   });
+  const [messages, setMessages] = useState([]);
+  const [addedFriends, setAddedFriends] = useState([]);
+  let socket;
 
+  useEffect(() => {
+    if (!socketRef.current) {
+      socketRef.current = io();
+    }
+    const socket = socketRef.current;
+    
+    socket.on("newMessage", (msg) => {
+      setMessages((messages) => [...messages, msg]);
+      console.log(msg);
+    });
+
+    return () => {
+      socket.removeAllListeners("newMessage");
+      socket.disconnect();
+    };
+  }, []);
   //   return () => {
   //     socket.removeAllListeners("newMessage");
   //     socket.disconnect();

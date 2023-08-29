@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Tabs, Tab, Button, Modal, Typography, Paper, Box } from "@mui/material";
 import MessagesSideBar from "../MessagesSideBar/MessagesSideBar";
 import Contacts from "../Contacts/Contacts";
-import NewContactModal from '../NewContact/NewContact';
 import NewMessageModal from '../NewMessage/NewMessage';
 import * as userService from "../../utilities/users-service";
 import UserSearch from "../UserSearch/Search";
@@ -12,12 +11,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
-const USER_SEARCH_KEY = "userSearch";
 
 export default function SideBar({ user, setUser, socket }) {
   const [activeTab, setActiveTab] = useState(MESSAGES_KEY);
   const [modalOpen, setModalOpen] = useState(false);
-  const [contacts, setContacts] = useState([]); // State to store contacts
+  const [contacts, setContacts] = useState([]);
 
   const theme = createTheme({
     palette: {
@@ -53,10 +51,17 @@ export default function SideBar({ user, setUser, socket }) {
     setUser(null);
   }
 
-  // Function to add a new friend to contacts
   const handleAddFriend = (newFriend) => {
-    setContacts((prevContacts) => [...prevContacts, newFriend]);
-    closeModal(); // Close the modal after adding a friend
+    console.log('Adding friend:', newFriend);
+  
+    if (!contacts.some((contact) => contact._id === newFriend)) {
+      console.log('Friend not already in contacts, adding...');
+      setContacts((contacts) => [...contacts, newFriend]);
+    } else {
+      console.log('Friend is already in contacts, not adding.');
+    }
+
+    closeModal();
   };
 
   return (

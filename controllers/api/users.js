@@ -68,6 +68,21 @@ console.log(user)
   }
 }
 
+async function removeFriend(req, res) {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { $pull: { contacts: req.params.userId } },
+      { new: true }
+    );
+    res.json(user);
+  } catch (error) {
+    console.error('Failed to remove friend:', error);
+    res.status(500).json({ error: 'An error occurred while removing friend.' });
+  }
+}
+
+
 /*--- Helper Functions --*/
 
 function createJWT(user) {
