@@ -4,10 +4,6 @@
 Slackers is a messaging platform where users can chat one-on-one with other users or even create group chats.
 This project was created using React and Express.
 
-Check us out at:
-
-## [Slackers](https://slackers-app-bf7c32b0fdb2.herokuapp.com/)
-
 
 ## Screenshots
 
@@ -55,19 +51,23 @@ Next Steps
 
 ## Technologies Used
 
-Socket.io
-Express.js
-React
-MongoDB
-HTML/CSS
-Node.js
-Material UI
-AWS
+* React
+* Express.js
+* Socket.io
+* MongoDB
+* HTML/CSS
+* Node.js
+* Material UI
+* AWS
 
 
 ## Usage
 
-Visit the deployed application at 
+Visit the deployed application at:
+
+## [Slackers](https://slackers-app-bf7c32b0fdb2.herokuapp.com/)
+
+
 Register for a new account or log in if you already have an account.
 Create chatrooms to talk to your contacts.
 Edit or update your password and upload a profile picture.
