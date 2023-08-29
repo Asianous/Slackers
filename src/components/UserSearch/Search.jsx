@@ -73,12 +73,12 @@ export default function Search({ closeModal, onAddFriend }) {
         </Button>
         {isLoading && <p>Loading...</p>}
         <List sx={{ marginTop: 2 }}>
-          {searchResults.map((user) => (
-            <ListItem key={user._id}>
+          {searchResults.map((user, idx) => (
+            <ListItem key={idx}>
               <ListItemText primary={user.name} />
               <Button
                 variant="outlined"
-                onClick={() => handleAddFriend(user._id)} // Call handleAddFriend with user ID
+                onClick={() => handleAddFriend(user._id)}
                 sx={{ marginLeft: 2 }}
               >
                 Add Friend
