@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import SignUpForm from '../../components/SignUpForm/SignUpForm';
 import LoginForm from '../../components/LoginForm/LoginForm';
 
 export default function AuthPage({ setUser }) {
   const [showSignUp, setShowSignUp] = useState(false);
+
   return (
     <main>
       <img
@@ -19,15 +20,7 @@ export default function AuthPage({ setUser }) {
           marginTop: 'auto'
         }}
       />
-      <Button
-        variant="contained"
-        fullWidth
-        onClick={() => setShowSignUp(!showSignUp)}
-        style={{ marginTop: '3vmin', backgroundColor: '#ADA9FC', color: 'white', width: '50%', marginLeft: 'auto', marginRight: 'auto'}}
-      >
-        {showSignUp ? 'Switch to Log In' : 'Switch to Sign Up'}
-      </Button>
-      {showSignUp ? <SignUpForm setUser={setUser} /> : <LoginForm setUser={setUser} />}
+      {showSignUp ? <SignUpForm setUser={setUser} showSignUp={showSignUp} setShowSignUp={setShowSignUp} /> : <LoginForm setUser={setUser} showSignUp={showSignUp} setShowSignUp={setShowSignUp} />}
     </main>
   );
 }

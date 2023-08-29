@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import * as usersService from '../../utilities/users-service';
 
-export default function LoginForm({ setUser }) {
+export default function LoginForm({ setUser, showSignUp, setShowSignUp }) {
   const [credentials, setCredentials] = useState({
     email: '',
     password: ''
@@ -23,6 +23,10 @@ export default function LoginForm({ setUser }) {
       setError('Log In Failed - Try Again');
     }
   }
+
+  const handleSwitchToSignUp = () => {
+    setShowSignUp(!showSignUp);
+  };
 
   return (
     <div>
@@ -48,12 +52,41 @@ export default function LoginForm({ setUser }) {
             fullWidth
             sx={{ marginBottom: '1rem' }}
           />
-          <Button type="submit" variant="contained" fullWidth style={{ backgroundColor: '#ADA9FC', color: 'white' }}>
-            LOG IN
-          </Button>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginTop: '2vmin',
+            }}
+          >
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleSwitchToSignUp}
+              style={{ backgroundColor: '#ADA9FC', color: 'white', width: '48%' }}
+            >
+              Switch to Sign Up
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              style={{ backgroundColor: '#ADA9FC', color: 'white', width: '48%' }}
+            >
+              LOG IN
+            </Button>
+          </div>
         </form>
       </div>
-      <Typography variant="body2" sx={{ fontFamily: 'Arial, sans-serif', fontSize: '2vmin', color: 'red', marginTop: '2vmin' }}>
+      <Typography
+        variant="body2"
+        sx={{
+          fontFamily: 'Arial, sans-serif',
+          fontSize: '2vmin',
+          color: 'red',
+          marginTop: '2vmin',
+        }}
+      >
         &nbsp;{error}
       </Typography>
     </div>
