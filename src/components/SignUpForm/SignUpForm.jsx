@@ -1,32 +1,43 @@
-import React, { Component } from 'react';
-import { signUp } from '../../utilities/users-service';
-import { Button, TextField } from '@mui/material';
+import React, { Component } from "react";
+import { signUp } from "../../utilities/users-service";
+import { Button, TextField } from "@mui/material";
 
 export default class SignUpForm extends Component {
   state = {
-    name: '',
-    email: '',
-    password: '',
-    confirm: '',
-    error: ''
+    name: "",
+    email: "",
+    password: "",
+    confirm: "",
+    error: "",
   };
 
   handleChange = (evt) => {
     this.setState({
       [evt.target.name]: evt.target.value,
-      error: ''
+      error: "",
     });
   };
 
   handleSubmit = async (evt) => {
     evt.preventDefault();
+
+    // Validation
+    const { name, email, password, confirm } = this.state;
+    if (!name || !email || !password || !confirm) {
+      this.setState({ error: "All fields are required" });
+      return;
+    }
+    if (password !== confirm) {
+      this.setState({ error: "Passwords Do Not Match" });
+      return;
+    }
+
     try {
-      const { name, email, password } = this.state;
       const formData = { name, email, password };
       const user = await signUp(formData);
       this.props.setUser(user);
     } catch {
-      this.setState({ error: 'Sign Up Failed - Try Again' });
+      this.setState({ error: "Sign Up Failed - Try Again" });
     }
   };
 
@@ -34,9 +45,9 @@ export default class SignUpForm extends Component {
     const disable = this.state.password !== this.state.confirm;
 
     const errorMessageStyle = {
-      fontFamily: 'Arial, sans-serif',
-      color: 'red',
-      fontSize: '2vmin',
+      fontFamily: "Arial, sans-serif",
+      color: "red",
+      fontSize: "2vmin",
     };
 
     const handleSwitchToLogIn = () => {
@@ -44,8 +55,14 @@ export default class SignUpForm extends Component {
     };
 
     return (
-      <div>
-        <div className="form-container">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <div className="form-container" style={{ marginBottom: "2vmin" }}>
           <form autoComplete="off" onSubmit={this.handleSubmit}>
             <TextField
               label="Name"
@@ -87,30 +104,38 @@ export default class SignUpForm extends Component {
               fullWidth
               margin="normal"
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: "flex", gap: "1rem" }}>
               <Button
                 variant="contained"
                 color="primary"
-                fullWidth
                 onClick={handleSwitchToLogIn}
-                style={{ marginTop: '1rem', backgroundColor: '#ADA9FC', color: 'white', width: '48%' }}
+                style={{
+                  backgroundColor: "#ADA9FC",
+                  color: "white",
+                }}
               >
-                Switch to Log In
+                Log In
               </Button>
               <Button
                 type="submit"
                 variant="contained"
                 color="primary"
-                disabled={disable}
-                fullWidth
-                style={{ marginTop: '1rem', backgroundColor: '#ADA9FC', color: 'white', width: '48%' }}
+                style={{
+                  backgroundColor: "#ADA9FC",
+                  color: "white",
+                }}
               >
                 SIGN UP
               </Button>
             </div>
           </form>
         </div>
-        <p className="error-message" style={errorMessageStyle}>&nbsp;{this.state.error}</p>
+        <p
+          className="error-message"
+          style={{ ...errorMessageStyle, marginTop: "2vmin" }}
+        >
+          {this.state.error}
+        </p>
       </div>
     );
   }

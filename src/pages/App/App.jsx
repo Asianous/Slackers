@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { getUser } from '../../utilities/users-service';
-import './App.css';
+import { useState, useEffect, useRef } from "react";
+import { Routes, Route } from "react-router-dom";
+import { getUser } from "../../utilities/users-service";
+import "./App.css";
 import AuthPage from "../AuthPage/AuthPage";
 import { io } from "socket.io-client";
 import Profile from "../../pages/Profile/profile";
 import Dashboard from "../../components/Dashboard/Dashboard";
-import { useEffect, useRef } from "react";
 import axios from "axios";
 
 export default function App() {

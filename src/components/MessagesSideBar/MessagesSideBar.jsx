@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { List, ListItem, ListItemButton } from "@mui/material";
+import { List, ListItem, ListItemButton, Typography } from "@mui/material";
 
 export default function MessageSideBar({ socket }) {
   const [rooms, setRooms] = useState([]);
@@ -18,7 +18,7 @@ export default function MessageSideBar({ socket }) {
 
   return (
     <div>
-      <h2>Rooms</h2>
+      <Typography>Rooms</Typography>
       <List>
         {rooms.map((roomId) => (
           <ListItem disablePadding key={roomId}>
