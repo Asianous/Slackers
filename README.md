@@ -75,10 +75,10 @@ Edit or update your password and upload a profile picture.
 
 ## Collaborators
 
- [Dennis Trang](https://github.com/Asianous)
- [Austin Lew](https://github.com/austinlew)
- [Rushang Patel](https://github.com/rushang-patel)
- [Mabel Lam](https://github.com/mabelam)
+* [Dennis Trang](https://github.com/Asianous)
+* [Austin Lew](https://github.com/austinlew)
+* [Rushang Patel](https://github.com/rushang-patel)
+* [Mabel Lam](https://github.com/mabelam)
 
 
 ## Challenges
