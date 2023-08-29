@@ -52,6 +52,7 @@ Next Steps
 * Their profile page which displays all messages sent by others as well as any new ones that have been.
 * Users can message individuals, as well as groups of people.
 
+
 ## Technologies Used
 
 Socket.io
@@ -63,12 +64,14 @@ Node.js
 Material UI
 AWS
 
+
 ## Usage
 
 Visit the deployed application at 
 Register for a new account or log in if you already have an account.
 Create chatrooms to talk to your contacts.
 Edit or update your password and upload a profile picture.
+
 
 ## Collaborators
 
@@ -80,7 +83,9 @@ Edit or update your password and upload a profile picture.
 
 ## Challenges
 
-The biggest challenge was getting Socket.IO working on Heroku. I had trouble figuring out how to get it running locally so I ended up using ng
+* Working with socket.io and figuring out how to incorporate it was a major challenge.
+* Finding users, and adding them to contacts was a challenge, and is still a WIP.
+* Profile photo and being able to edit/ replace that picture was a major challenge.
 
 
 ## Next Steps
