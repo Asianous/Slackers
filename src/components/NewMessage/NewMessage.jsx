@@ -20,6 +20,17 @@ export default function NewMessageModal({ closeModal, socket, user }) {
   const [messages, setMessages] = useState([]);
   const socketRef = useRef(socket);
 
+  // useEffect(() => {
+  //   // const socket = io("http://localhost:3001");
+  //   // socketRef.current = socket;
+
+  //   socket.on("newMessage", (msg) => {
+  //     setMessages((prevMessages) => [...prevMessages, msg]);
+  //     // console.log("NewMessageModal: Received new message:", msg);
+  //   });
+  const [messages, setMessages] = useState([]);
+  const [addedFriends, setAddedFriends] = useState([]);
+  let socket;
 
   useEffect(() => {
     if (!socketRef.current) {
@@ -38,6 +49,11 @@ export default function NewMessageModal({ closeModal, socket, user }) {
       socketRef.current.disconnect();
     };
   }, []);
+  //   return () => {
+  //     socket.removeAllListeners("newMessage");
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
