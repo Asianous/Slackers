@@ -16,43 +16,28 @@ import * as userService from "../../utilities/users-api";
 export default function NewMessageModal({ closeModal, socket, user }) {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [message, setMessage] = useState("");
-  // const [messages, setMessages] = useState([]);
   const [messageSent, setMessageSent] = useState(false);
+  const [messages, setMessages] = useState([]);
   const socketRef = useRef(socket);
 
-  // useEffect(() => {
-  //   // const socket = io("http://localhost:3001");
-  //   // socketRef.current = socket;
-
-  //   socket.on("newMessage", (msg) => {
-  //     setMessages((prevMessages) => [...prevMessages, msg]);
-  //     // console.log("NewMessageModal: Received new message:", msg);
-  //   });
-  const [messages, setMessages] = useState([]);
-  const [addedFriends, setAddedFriends] = useState([]);
-  let socket;
 
   useEffect(() => {
     if (!socketRef.current) {
       socketRef.current = io();
     }
-    const socket = socketRef.current;
+    // Commented out the socket declaration inside the useEffect hook
+    // const socket = socketRef.current;
     
-    socket.on("newMessage", (msg) => {
+    socketRef.current.on("newMessage", (msg) => {
       setMessages((messages) => [...messages, msg]);
       console.log(msg);
     });
 
     return () => {
-      socket.removeAllListeners("newMessage");
-      socket.disconnect();
+      socketRef.current.removeAllListeners("newMessage");
+      socketRef.current.disconnect();
     };
   }, []);
-  //   return () => {
-  //     socket.removeAllListeners("newMessage");
-  //     socket.disconnect();
-  //   };
-  // }, []);
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
@@ -60,7 +45,6 @@ export default function NewMessageModal({ closeModal, socket, user }) {
 
   const handleSelectUser = (user) => {
     setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, user.name]);
-    // console.log("NewMessageModal: Selected users:", selectedUsers);
   };
 
   const handleSubmit = (e) => {
@@ -75,16 +59,11 @@ export default function NewMessageModal({ closeModal, socket, user }) {
     // Emit the message along with the selected recipient through the socket
     socketRef.current.emit("newMessage", newMessage);
 
-    // Add the sent message to the messages state
-    // setMessages((prevMessages) => [...prevMessages, newMessage]);
-
-    // Clear the input fields after emitting the message
     setMessage("");
     setSelectedUsers([]);
     setMessageSent(true);
     closeModal();
     createMessage(newMessage);
-    // console.log("NewMessageModal: Emitting new message:", newMessage);
   };
 
   return (

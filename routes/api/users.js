@@ -14,10 +14,4 @@ router.get('/check-token', ensureLoggedIn, usersCtrl.checkToken);
 // POST /api/users/change-password
 router.put('/change-password', ensureLoggedIn, usersCtrl.changePassword);
 
-// POST /api/users/add-friend/:userId
-router.post('/add-friend/:userId', ensureLoggedIn, usersCtrl.addFriend);
-
-// DELETE /api/users/remove-friend/:userId
-router.delete('/remove-friend/:userId', ensureLoggedIn, usersCtrl.removeFriend);
-
 module.exports = router;
