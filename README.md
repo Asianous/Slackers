@@ -72,10 +72,16 @@ Edit or update your password and upload a profile picture.
 
 ## Collaborators
 
-### [Dennis Trang](https://github.com/Asianous)
-### [Austin Lew](https://github.com/austinlew)
-### [Rushang Patel](https://github.com/rushang-patel)
-### [Mabel Lam](https://github.com/mabelam)
+ [Dennis Trang](https://github.com/Asianous)
+ [Austin Lew](https://github.com/austinlew)
+ [Rushang Patel](https://github.com/rushang-patel)
+ [Mabel Lam](https://github.com/mabelam)
+
+
+## Challenges
+
+The biggest challenge was getting Socket.IO working on Heroku. I had trouble figuring out how to get it running locally so I ended up using ng
+
 
 ## Next Steps
 
