@@ -1,11 +1,11 @@
 
-## Slackers
+# Slackers
 
 Slackers is a messaging platform where users can chat one-on-one with other users or even create group chats.
 This project was created using React and Express. 
 
 
-# Screenshots
+## Screenshots
 
 ### Login Screen
 ![Login](/src/assests/images/login.png)
@@ -45,9 +45,8 @@ Next Steps
 ### Feature
 * Users are able to login, signup for an account
 * Once logged into the app they will be redirected to their home page which displays all messages sent by others as well as any new ones that have been.
-* Once logged into the app they will be redirected to their profile page which displays all messages sent by others as well as any new ones that have been.
-* Once logged into the app they will be directed to their home page which displays all messages sent by others as well as any new ones that have been.
-* Once loggedin they will be redirected to the home page which displays all messages sent by others as well as their own message history.
+* Their profile page which displays all messages sent by others as well as any new ones that have been.
+* Users can message individuals, as well as groups of people.
 
 ## Technologies Used
 
