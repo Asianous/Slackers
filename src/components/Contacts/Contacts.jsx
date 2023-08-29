@@ -9,7 +9,7 @@ export default function Contacts({ contacts }) {
       <ul>
   {contacts.map((contact, idx) => (
     <li key={idx}>
-      {contact.name}
+      {contact}
       <button onClick={() => handleRemoveFriend(contact._id)}>Remove</button>
     </li>
   ))}

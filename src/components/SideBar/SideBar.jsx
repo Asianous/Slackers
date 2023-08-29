@@ -36,7 +36,7 @@ export default function SideBar({ user, setUser }) {
   const handleAddFriend = (newFriend) => {
     console.log('Adding friend:', newFriend);
   
-    if (!contacts.some((contact) => contact.name === newFriend.name)) {
+    if (!contacts.some((contact) => contact._id === newFriend)) {
       console.log('Friend not already in contacts, adding...');
       setContacts((contacts) => [...contacts, newFriend]);
     } else {
