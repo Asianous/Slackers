@@ -41,7 +41,7 @@ export default function LoginForm({ setUser, showSignUp, setShowSignUp }) {
                 name="email"
                 value={credentials.email}
                 onChange={handleChange}
-                sx={{ width: "30%" }} // Adjust the width as needed
+                sx={{ width: "100%" }} // Adjust the width as needed
               />
             </Grid>
             <Grid item>
@@ -52,7 +52,7 @@ export default function LoginForm({ setUser, showSignUp, setShowSignUp }) {
                 name="password"
                 value={credentials.password}
                 onChange={handleChange}
-                sx={{ width: "30%" }} // Adjust the width as needed
+                sx={{ width: "100%" }} // Adjust the width as needed
               />
             </Grid>
           </Grid>

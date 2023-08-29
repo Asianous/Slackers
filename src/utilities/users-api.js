@@ -63,21 +63,19 @@ export async function searchUsers(query) {
 // }
 
 export async function addFriend(userId) {
-  try {
-    console.log('Sending request to add friend...');
-    const response = await usersAPI.addFriend(userId);
-    console.log('Received response:', response);
-    const newFriend = response.data;
-
-    const updatedUser = { ...getUser() };
-    updatedUser.contacts.push(newFriend._id);
-
-    localStorage.setItem('token', createToken({ user: updatedUser }));
-    return response.data;
-  } catch (error) {
-    console.error('Error adding friend:', error);
-    throw new Error('Failed to add friend.');
-  }
+  // try {
+  //   console.log('Sending request to add friend...');
+  //   const response = await usersAPI.addFriend(userId);
+  //   console.log('Received response:', response);
+  //   const newFriend = response.data;
+  //   const updatedUser = { ...getUser() };
+  //   updatedUser.contacts.push(newFriend._id);
+  //   localStorage.setItem('token', createToken({ user: updatedUser }));
+  //   return response.data;
+  // } catch (error) {
+  //   console.error('Error adding friend:', error);
+  //   throw new Error('Failed to add friend.');
+  // }
 }
 
 export async function removeFriend(userId) {
