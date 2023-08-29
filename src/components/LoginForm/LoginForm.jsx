@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { Button, TextField, Typography } from '@mui/material';
-import * as usersService from '../../utilities/users-service';
+import React, { useState } from "react";
+import { Button, Grid, TextField, Typography } from "@mui/material";
+import * as usersService from "../../utilities/users-service";
 
 export default function LoginForm({ setUser, showSignUp, setShowSignUp }) {
   const [credentials, setCredentials] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChange = (evt) => {
     setCredentials({ ...credentials, [evt.target.name]: evt.target.value });
-    setError('');
-  }
+    setError("");
+  };
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -20,9 +20,9 @@ export default function LoginForm({ setUser, showSignUp, setShowSignUp }) {
       const user = await usersService.login(credentials);
       setUser(user);
     } catch {
-      setError('Log In Failed - Try Again');
+      setError("Log In Failed - Try Again");
     }
-  }
+  };
 
   const handleSwitchToSignUp = () => {
     setShowSignUp(!showSignUp);
@@ -32,59 +32,62 @@ export default function LoginForm({ setUser, showSignUp, setShowSignUp }) {
     <div>
       <div className="form-container">
         <form autoComplete="off" onSubmit={handleSubmit}>
-          <TextField
-            label="Email"
-            variant="outlined"
-            type="text"
-            name="email"
-            value={credentials.email}
-            onChange={handleChange}
-            fullWidth
-            sx={{ marginBottom: '1rem', marginTop: '2vmin' }}
-          />
-          <TextField
-            label="Password"
-            variant="outlined"
-            type="password"
-            name="password"
-            value={credentials.password}
-            onChange={handleChange}
-            fullWidth
-            sx={{ marginBottom: '1rem' }}
-          />
-          <div
+          <Grid container spacing={3} direction="column">
+            <Grid item>
+              <TextField
+                label="Email"
+                variant="outlined"
+                type="text"
+                name="email"
+                value={credentials.email}
+                onChange={handleChange}
+                sx={{ width: "30%" }} // Adjust the width as needed
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                label="Password"
+                variant="outlined"
+                type="password"
+                name="password"
+                value={credentials.password}
+                onChange={handleChange}
+                sx={{ width: "30%" }} // Adjust the width as needed
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            variant="contained"
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginTop: '2vmin',
+              backgroundColor: "#ADA9FC",
+              color: "white",
+              marginTop: "1rem",
             }}
           >
-            <Button
-              variant="contained"
-              fullWidth
-              onClick={handleSwitchToSignUp}
-              style={{ backgroundColor: '#ADA9FC', color: 'white', width: '48%' }}
-            >
-              Switch to Sign Up
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              style={{ backgroundColor: '#ADA9FC', color: 'white', width: '48%' }}
-            >
-              LOG IN
-            </Button>
-          </div>
+            LOG IN
+          </Button>
         </form>
+      </div>
+      <div style={{ marginTop: "2vmin" }}>
+        <Button
+          variant="contained"
+          onClick={handleSwitchToSignUp}
+          style={{
+            backgroundColor: "#ADA9FC",
+            color: "white",
+          }}
+        >
+          Sign Up
+        </Button>
       </div>
       <Typography
         variant="body2"
         sx={{
-          fontFamily: 'Arial, sans-serif',
-          fontSize: '2vmin',
-          color: 'red',
-          marginTop: '2vmin',
+          fontFamily: "Arial, sans-serif",
+          fontSize: "2vmin",
+          color: "red",
+          marginTop: "2vmin",
         }}
       >
         &nbsp;{error}
