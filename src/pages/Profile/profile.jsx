@@ -16,7 +16,6 @@ function UserProfile() {
       const response = await updatePassword({ oldPassword, newPassword });
       setSuccessMessage('Password updated successfully.');
       setErrorMessage('');
-      // Clear the form and hide it
       setOldPassword('');
       setNewPassword('');
       setShowChangePasswordForm(false);
@@ -32,9 +31,25 @@ function UserProfile() {
     setErrorMessage('');
   };
 
+  const handleGoBackHome = () => {
+    window.history.back();
+  };
+
   return (
     <div className="user-profile">
-      {/* ...other profile display elements... */}
+      <Button
+        onClick={handleGoBackHome}
+        variant="contained"
+        fullWidth
+        style={{
+          backgroundColor: '#ADA9FC',
+          color: 'white',
+          marginTop: '2vmin',
+        }}
+      >
+        Home Page
+      </Button>
+
       {!showChangePasswordForm && (
         <Button
           onClick={() => setShowChangePasswordForm(true)}
@@ -70,11 +85,11 @@ function UserProfile() {
             fullWidth
             sx={{ marginBottom: '1rem' }}
           />
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
             <Button
               onClick={handleGoBack}
               variant="contained"
-              style={{ 
+              style={{
                 backgroundColor: '#ADA9FC',
                 color: 'white',
                 width: '48%',
