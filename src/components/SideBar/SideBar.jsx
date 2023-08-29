@@ -4,20 +4,22 @@ import { Tabs, Tab, Button, Modal, Typography, Paper, Box } from "@mui/material"
 import MessagesSideBar from "../MessagesSideBar/MessagesSideBar";
 import Contacts from "../Contacts/Contacts";
 import NewContactModal from '../NewContact/NewContact';
-import NewMessageModal from '../NewMessage/NewMessage';
+import NewMessageModal from "../NewMessageModal/NewMessageModal";
 import * as userService from "../../utilities/users-service";
 import UserSearch from "../UserSearch/Search";
 import { Link } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Messages from "../Messages/Messages";
+import { Room, RoomOutlined } from "@mui/icons-material";
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
-const USER_SEARCH_KEY = "userSearch";
 
-export default function SideBar({ user, setUser }) {
+export default function SideBar({ user, setUser, socket }) {
   const [activeTab, setActiveTab] = useState(MESSAGES_KEY);
   const [modalOpen, setModalOpen] = useState(false);
   const [contacts, setContacts] = useState([]); // State to store contacts
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   const theme = createTheme({
     palette: {
@@ -27,8 +29,18 @@ export default function SideBar({ user, setUser }) {
         dark: "#7e78fa",
         contrastText: "#242105",
       },
+      primary: {
+        main: "#ADA9FC",
+        light: "#c4c2fd",
+        dark: "#7e78fa",
+        contrastText: "#242105",
+      },
     },
   });
+
+  const handleSelectRoom = (roomId) => {
+    setSelectedRoom(roomId);
+  };
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -47,10 +59,17 @@ export default function SideBar({ user, setUser }) {
     setUser(null);
   }
 
-  // Function to add a new friend to contacts
   const handleAddFriend = (newFriend) => {
-    setContacts((prevContacts) => [...prevContacts, newFriend]);
-    closeModal(); // Close the modal after adding a friend
+    console.log('Adding friend:', newFriend);
+  
+    if (!contacts.some((contact) => contact._id === newFriend)) {
+      console.log('Friend not already in contacts, adding...');
+      setContacts((contacts) => [...contacts, newFriend]);
+    } else {
+      console.log('Friend is already in contacts, not adding.');
+    }
+
+    closeModal();
   };
 
   return (
@@ -67,6 +86,8 @@ export default function SideBar({ user, setUser }) {
         }}
       >
         <Tabs
+          textColor="primary"
+          indicatorColor="primary"
           value={activeTab}
           onChange={handleTabChange}
           variant="fullWidth"
@@ -95,7 +116,11 @@ export default function SideBar({ user, setUser }) {
           </Button>
           <Modal open={modalOpen} onClose={closeModal}>
             {activeTab === MESSAGES_KEY ? (
-              <NewMessageModal closeModal={closeModal} />
+              <NewMessageModal
+                socket={socket}
+                user={user}
+                closeModal={closeModal}
+              />
             ) : (
               <UserSearch
                 closeModal={closeModal}
@@ -114,7 +139,7 @@ export default function SideBar({ user, setUser }) {
             borderColor: "grey.300",
           }}
         >
-          <Typography variant="body2">
+          <Typography color="primary.dark" variant="body2">
             Logged in as: {user.name}
             <Button
               color="lightPurple"
@@ -142,12 +167,18 @@ export default function SideBar({ user, setUser }) {
         ></Box>
         <Box className="border-right overflow-auto flex-grow-1">
           {activeTab === MESSAGES_KEY ? (
-            <MessagesSideBar />
+            <MessagesSideBar
+              onSelectRoom={handleSelectRoom}
+              socket={socket}
+              roomId={selectedRoom}
+            />
           ) : activeTab === CONTACTS_KEY ? (
             <Contacts contacts={contacts} />
           ) : (
             <UserSearch closeModal={closeModal} onAddFriend={handleAddFriend} />
           )}
+
+          {selectedRoom && <Messages socket={socket} roomId={selectedRoom} />}
         </Box>
       </Paper>
     </ThemeProvider>

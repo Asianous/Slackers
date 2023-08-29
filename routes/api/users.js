@@ -11,7 +11,7 @@ router.post('/', usersCtrl.create);
 router.post('/login', usersCtrl.login);
 // GET /api/users/check-token
 router.get('/check-token', ensureLoggedIn, usersCtrl.checkToken);
-// POST / api/users/change-password
+// PUT / api/users/change-password
 router.put('/change-password', ensureLoggedIn,usersCtrl.changePassword);
 
 module.exports = router;
