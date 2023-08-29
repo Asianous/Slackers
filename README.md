@@ -2,7 +2,11 @@
 # Slackers
 
 Slackers is a messaging platform where users can chat one-on-one with other users or even create group chats.
-This project was created using React and Express. 
+This project was created using React and Express.
+
+Check us out at:
+
+## [Slackers](https://slackers-app-bf7c32b0fdb2.herokuapp.com/)
 
 
 ## Screenshots
