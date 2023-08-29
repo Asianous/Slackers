@@ -6,19 +6,17 @@ Slackers is a messaging platform where users can chat one-on-one with other user
 This project was created using React and Express. 
 
 
-##Screenshots
+#Screenshots
 
 
 
-### Table of Contents
+## Table of Contents
 Feature
 Tech Used
 Usage
 Collaborators
 Next Steps
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
 ### Technologies Used
