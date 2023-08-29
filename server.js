@@ -36,22 +36,18 @@ const connectedSockets = {};
 const rooms = {};
 
 io.on("connection", (socket) => {
-  const roomId = uuidv4();
   console.log(`${socket.id} is connected`);
   connectedSockets[socket.id] = socket;
 
   socket.on("newConvo", (data) => {
+    const roomId = uuidv4();
     console.log("NEW MSG DATA", data);
     socket.join(roomId);
 
     rooms[roomId] = {
-      participants: [data.sender, ...data.recipients],
+      participants: [data.sender, ...data.recipients], // Store participants' names
     };
 
-    // if (connectedSockets[data.recipient]) {
-    //   connectedSockets[data.recipient].emit("newMessage", data);
-    // }
-    // socket.emit("newMessage", data, roomId);
     io.to(roomId).emit("newConvo", data, roomId);
 
     io.emit("updatedRooms", Object.keys(rooms));
@@ -59,9 +55,11 @@ io.on("connection", (socket) => {
 
   socket.on("getRooms", () => {
     socket.emit("updatedRooms", Object.keys(rooms));
+    console.log("Avaible Rooms: ", rooms);
   });
 
   socket.on("disconnect", () => {
+    // axios.delete("/sockets", { socket: socket.id });
     console.log(`${socket.id} has disconnected`);
     delete connectedSockets[socket.id];
   });

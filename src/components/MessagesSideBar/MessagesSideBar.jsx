@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { List, ListItem, ListItemButton } from "@mui/material";
 
-export default function MessageSideBar({ socket, onSelectRoom }) {
+export default function MessageSideBar({ socket }) {
   const [rooms, setRooms] = useState([]);
-  const [selectedRoom, setSelectedRoom] = useState(null);
 
   useEffect(() => {
     socket.emit("getRooms");
@@ -23,9 +22,7 @@ export default function MessageSideBar({ socket, onSelectRoom }) {
       <List>
         {rooms.map((roomId) => (
           <ListItem disablePadding key={roomId}>
-            <ListItemButton onClick={() => onSelectRoom(roomId)}>
-              {roomId}
-            </ListItemButton>
+            <ListItemButton>{roomId}</ListItemButton>
           </ListItem>
         ))}
       </List>

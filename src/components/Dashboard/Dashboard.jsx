@@ -10,7 +10,6 @@ import { Grid } from "@mui/material/";
 export default function Dashboard({ user, setUser, socket }) {
   const [messages, setMessages] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
-
   return (
     <Grid container sx={{ height: "95vh" }}>
       <Grid item xs={4} s={3} md={2}>
@@ -23,7 +22,7 @@ export default function Dashboard({ user, setUser, socket }) {
           setMessages={setMessages}
           socket={socket}
           user={user}
-          roomId={selectedRoom}
+          room={selectedRoom}
         />
       </Grid>
     </Grid>

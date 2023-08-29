@@ -4,12 +4,13 @@ import { Tabs, Tab, Button, Modal, Typography, Paper, Box } from "@mui/material"
 import MessagesSideBar from "../MessagesSideBar/MessagesSideBar";
 import Contacts from "../Contacts/Contacts";
 import NewContactModal from '../NewContact/NewContact';
-import NewMessageModal from '../NewMessage/NewMessage';
+import NewMessageModal from "../NewMessageModal/NewMessageModal";
 import * as userService from "../../utilities/users-service";
 import UserSearch from "../UserSearch/Search";
 import { Link } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Messages from "../Messages/Messages";
+import { Room, RoomOutlined } from "@mui/icons-material";
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
@@ -160,7 +161,11 @@ export default function SideBar({ user, setUser, socket }) {
         ></Box>
         <Box className="border-right overflow-auto flex-grow-1">
           {activeTab === MESSAGES_KEY ? (
-            <MessagesSideBar onSelectRoom={handleSelectRoom} socket={socket} />
+            <MessagesSideBar
+              onSelectRoom={handleSelectRoom}
+              socket={socket}
+              roomId={selectedRoom}
+            />
           ) : activeTab === CONTACTS_KEY ? (
             <Contacts contacts={contacts} />
           ) : (

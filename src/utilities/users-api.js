@@ -13,11 +13,6 @@ export async function checkToken() {
   return sendRequest(`${BASE_URL}/check-token`);
 }
 
-// export async function search(query) {
-//   return sendRequest(`api/search`, 'GET');
-// }
-
-
 export async function searchUsers(query) {
   try{
     const res = await sendRequest(`/api/search?q=${query}`);
@@ -32,4 +27,8 @@ export async function searchUsers(query) {
 
 export async function updatePassword(passwordInfo) {
   return sendRequest(`${BASE_URL}/change-password`, 'PUT', passwordInfo);
+}
+
+export function UpdateUser(id, userData) {
+  return sendRequest(`${BASE_URL}/${id}`, "PUT", userData);
 }
