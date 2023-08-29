@@ -7,14 +7,32 @@ import NewMessageModal from '../NewMessage/NewMessage';
 import * as userService from "../../utilities/users-service";
 import UserSearch from "../UserSearch/Search";
 import { Link } from "react-router-dom";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const MESSAGES_KEY = "messages";
 const CONTACTS_KEY = "contacts";
 
-export default function SideBar({ user, setUser }) {
+export default function SideBar({ user, setUser, socket }) {
   const [activeTab, setActiveTab] = useState(MESSAGES_KEY);
   const [modalOpen, setModalOpen] = useState(false);
   const [contacts, setContacts] = useState([]);
+
+  const theme = createTheme({
+    palette: {
+      lightPurple: {
+        main: "#ADA9FC",
+        light: "#c4c2fd",
+        dark: "#7e78fa",
+        contrastText: "#242105",
+      },
+      primary: {
+        main: "#ADA9FC",
+        light: "#c4c2fd",
+        dark: "#7e78fa",
+        contrastText: "#242105",
+      },
+    },
+  });
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -47,90 +65,108 @@ export default function SideBar({ user, setUser }) {
   };
 
   return (
-    <Paper
-      sx={{
-        maxWidth: 350,
-        width: "100%",
-        position: "relative",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        height: "98vh",
-      }}
-    >
-      <Tabs
-        value={activeTab}
-        onChange={handleTabChange}
-        variant="fullWidth"
-        centered
-      >
-        <Tab label="Messages" value={MESSAGES_KEY} />
-        <Tab label="Contacts" value={CONTACTS_KEY} />
-      </Tabs>
-
-      <Box
+    <ThemeProvider theme={theme}>
+      <Paper
         sx={{
-          p: 0,
-          position: "absolute",
-          bottom: 1,
+          maxWidth: 350,
           width: "100%",
+          position: "relative",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          height: "98vh",
         }}
       >
-        <Button
-          onClick={openModal}
-          color="primary"
-          variant="contained"
-          fullWidth
-          sx={{ borderRadius: 0 }}
+        <Tabs
+          textColor="primary"
+          indicatorColor="primary"
+          value={activeTab}
+          onChange={handleTabChange}
+          variant="fullWidth"
+          centered
         >
-          New {activeTab === MESSAGES_KEY ? "Message" : "Contact"}
-        </Button>
-        <Modal open={modalOpen} onClose={closeModal}>
+          <Tab label="Messages" value={MESSAGES_KEY} />
+          <Tab label="Contacts" value={CONTACTS_KEY} />
+        </Tabs>
+
+        <Box
+          sx={{
+            p: 0,
+            position: "absolute",
+            bottom: 1,
+            width: "100%",
+          }}
+        >
+          <Button
+            onClick={openModal}
+            variant="contained"
+            fullWidth
+            sx={{ borderRadius: 0 }}
+            color="lightPurple"
+          >
+            New {activeTab === MESSAGES_KEY ? "Message" : "Contact"}
+          </Button>
+          <Modal open={modalOpen} onClose={closeModal}>
+            {activeTab === MESSAGES_KEY ? (
+              <NewMessageModal
+                socket={socket}
+                user={user}
+                closeModal={closeModal}
+              />
+            ) : (
+              <UserSearch
+                closeModal={closeModal}
+                onAddFriend={handleAddFriend}
+              />
+            )}
+          </Modal>
+        </Box>
+        <Box
+          sx={{
+            p: 0,
+            position: "absolute",
+            bottom: 38,
+            width: "100%",
+            borderBottom: 1,
+            borderColor: "grey.300",
+          }}
+        >
+          <Typography color="primary.dark" variant="body2">
+            Logged in as: {user.name}
+            <Button
+              color="lightPurple"
+              fullWidth
+              component={Link}
+              to="/profile"
+            >
+              Profile
+            </Button>
+          </Typography>
+          <Button fullWidth color="lightPurple" onClick={handleLogOut}>
+            Log Out
+          </Button>
+        </Box>
+
+        <Box
+          sx={{
+            p: 1,
+            position: "absolute",
+            top: 60,
+            bottom: 120,
+            width: "100%",
+            overflowY: "auto", // Allow content to scroll if necessary
+          }}
+        ></Box>
+        <Box className="border-right overflow-auto flex-grow-1">
           {activeTab === MESSAGES_KEY ? (
-            <NewMessageModal closeModal={closeModal} />
+            <MessagesSideBar />
+          ) : activeTab === CONTACTS_KEY ? (
+            <Contacts contacts={contacts} />
           ) : (
             <UserSearch closeModal={closeModal} onAddFriend={handleAddFriend} />
           )}
-        </Modal>
-      </Box>
-      <Box
-        sx={{
-          p: 0,
-          position: "absolute",
-          bottom: 38,
-          width: "100%",
-          borderBottom: 1,
-          borderColor: "grey.300",
-        }}
-      >
-        <Typography variant="body2">
-          Logged in as: {user.name}
-          <Button component={Link} to="/profile">
-            Profile
-          </Button>
-        </Typography>
-        <Button onClick={handleLogOut}>Log Out</Button>
-      </Box>
-
-      <Box
-        sx={{
-          p: 1,
-          position: "absolute",
-          top: 60,
-          bottom: 120,
-          width: "100%",
-          overflowY: "auto", // Allow content to scroll if necessary
-        }}
-      ></Box>
-      <Box className="border-right overflow-auto flex-grow-1">
-        {activeTab === MESSAGES_KEY ? (
-          <MessagesSideBar />
-        ) : activeTab === CONTACTS_KEY ? (
-          <Contacts contacts={contacts} />
-        ) : (
-          <UserSearch closeModal={closeModal} onAddFriend={handleAddFriend} />
-        )}
-      </Box>
-    </Paper>
+        </Box>
+      </Paper>
+    </ThemeProvider>
   );
 }

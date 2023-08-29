@@ -1,25 +1,17 @@
-import { Link } from 'react-router-dom';
-import * as userService from '../../utilities/users-service';
+import { Link } from "react-router-dom";
 
-export default function NavBar({ user, setUser }) {
-  function handleLogOut() {
-    userService.logOut();
-    setUser(null);
-  }
-
+export default function NavBar() {
   return (
-    <nav>
-      <Link to="/group">Group Chat</Link>
-      &nbsp; | &nbsp;
-      <Link to="/message">Message</Link>
-      &nbsp; | &nbsp;
-      <Link to="/search">User Search</Link>
-      &nbsp; | &nbsp;
-      <span>Welcome, {user.name}</span>
-      &nbsp;&nbsp;
-      <Link to="" onClick={handleLogOut}>
-        Log Out
-      </Link>
-    </nav>
+    <img
+      src="https://lh3.googleusercontent.com/pw/AIL4fc_jjScx0Re4L0kycicvXQvVzp0FWSloeimCAWY5H8qSk-yShPakaklgGNzvM2aVEF0FS0GJ3BFuYNwGzP60ViUOP6FuaXd021pbdoklAxMDxGv5cYY=w2400"
+      alt="Slackers"
+      style={{
+        position: "absolute",
+        maxWidth: 5,
+        minWidth: "5%",
+        height: "auto",
+        marginLeft: "auto",
+      }}
+    />
   );
 }
