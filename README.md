@@ -1,7 +1,6 @@
 
 ## Slackers
 
-
 Slackers is a messaging platform where users can chat one-on-one with other users or even create group chats.
 This project was created using React and Express. 
 
@@ -70,10 +69,10 @@ Edit or update your password and upload a profile picture.
 
 ## Collaborators
 
-# [Dennis Trang](https://github.com/Asianous)
-# [Austin Lew](https://github.com/austinlew)
-# [Rushang Patel](https://github.com/rushang-patel)
-# [Mabel Lam](https://github.com/mabelam)
+### [Dennis Trang](https://github.com/Asianous)
+### [Austin Lew](https://github.com/austinlew)
+### [Rushang Patel](https://github.com/rushang-patel)
+### [Mabel Lam](https://github.com/mabelam)
 
 ## Next Steps
 
