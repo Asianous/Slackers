@@ -1,20 +1,27 @@
 import React from "react";
-import SideBar from "../../components/SideBar/SideBar";
 import { useState } from "react";
 import { getUser } from "../../utilities/users-service";
-import Message from "../../components/Messages/Messages";
-import Grid from "@mui/material/Grid";
+import { io } from "socket.io-client";
+import SideBar from "../../components/SideBar/SideBar";
+import Messages from "../../components/Messages/Messages";
+import NavBar from "../../components/NavBar/NavBar";
+import { Grid } from "@mui/material/";
 
-export default function Dashboard({ user, setUser }) {
-  // const [user, setUser] = useState(getUser());
-
+export default function Dashboard({ user, setUser, socket }) {
+  const [messages, setMessages] = useState([]);
   return (
-    <Grid container sx={{ height: "100vh" }}>
-      <Grid item xs={6} s={3} md={2}>
-        <SideBar user={user} setUser={setUser} />
+    <Grid container sx={{ height: "95vh" }}>
+      <Grid item xs={4} s={3} md={2}>
+        <SideBar user={user} setUser={setUser} socket={socket} />
       </Grid>
-      <Grid item xs={6} s={9} md={10}>
-        <Message />
+      <Grid item xs={8} s={9} md={10}>
+        <NavBar />
+        <Messages
+          messages={messages}
+          setMessages={setMessages}
+          socket={socket}
+          user={user}
+        />
       </Grid>
     </Grid>
   );
