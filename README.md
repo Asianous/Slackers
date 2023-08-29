@@ -43,8 +43,14 @@ Collaborators
 Next Steps
 
 
+### Feature
+* Users are able to login, signup for an account
+* Once logged into the app they will be redirected to their home page which displays all messages sent by others as well as any new ones that have been.
+* Once logged into the app they will be redirected to their profile page which displays all messages sent by others as well as any new ones that have been.
+* Once logged into the app they will be directed to their home page which displays all messages sent by others as well as any new ones that have been.
+* Once loggedin they will be redirected to the home page which displays all messages sent by others as well as their own message history.
 
-### Technologies Used
+## Technologies Used
 
 Socket.io
 Express.js
@@ -55,19 +61,19 @@ Node.js
 Material UI
 AWS
 
-### Usage
+## Usage
 
 Visit the deployed application at 
 Register for a new account or log in if you already have an account.
 Create chatrooms to talk to your contacts.
 Edit or update your password and upload a profile picture.
 
-### Collaborators
+## Collaborators
 
-Dennis Trang - [ ](https://github.com/Asianous)
-Austin Lew - [ ](https://github.com/austinlew)
-Rushang Patel - [ ](https://github.com/rushang-patel)
-Mabel Lam -  [ ](https://github.com/mabelam)
+# [Dennis Trang](https://github.com/Asianous)
+# [Austin Lew](https://github.com/austinlew)
+# [Rushang Patel](https://github.com/rushang-patel)
+# [Mabel Lam](https://github.com/mabelam)
 
 ## Next Steps
 
